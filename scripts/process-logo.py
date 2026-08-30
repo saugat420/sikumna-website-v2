@@ -1,4 +1,5 @@
 from pathlib import Path
+from math import hypot
 
 from PIL import Image
 
@@ -33,7 +34,16 @@ for y in range(height):
         red, green, blue = pixels[x, y]
         inside_mark = (x - center_x) ** 2 + (y - center_y) ** 2 <= radius**2
         if inside_mark:
-            result_pixels[x, y] = (red, green, blue, 255)
+            distance = hypot(x - center_x, y - center_y)
+            is_black_ring = distance > radius * 0.78 and max(red, green, blue) < 45
+            if is_black_ring:
+                scale = (radius * 0.77) / distance
+                sample_x = round(center_x + (x - center_x) * scale)
+                sample_y = round(center_y + (y - center_y) * scale)
+                sample_red, sample_green, sample_blue = pixels[sample_x, sample_y]
+                result_pixels[x, y] = (sample_red, sample_green, sample_blue, 255)
+            else:
+                result_pixels[x, y] = (red, green, blue, 255)
         else:
             alpha = max(red, green, blue)
             if alpha > 8:

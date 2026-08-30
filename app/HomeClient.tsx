@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import {
-  ArrowRight, BadgeCheck, BriefcaseBusiness, ClipboardPenLine,
-  Compass, Menu,
-  Play, Radio, TrendingUp,
-  UserRound, Users, Video, Youtube, X,
+  ArrowRight, BadgeCheck, BrainCircuit, BriefcaseBusiness, ClipboardPenLine,
+  Compass, Contact, Laptop, Menu, Megaphone, MessageCircle, Play, Radio,
+  Rocket, Search, ShoppingCart, Target, TrendingUp, UserRound, Users, Video, X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
@@ -20,24 +19,24 @@ const benefits: { icon: LucideIcon; title: string; description: string; accent: 
 ];
 
 const programs = [
-  { title: "AI Marketing Launchpad", description: "A practical program to help you master AI marketing tools and strategies.", image: "/reference-assets/program-ai.png" },
-  { title: "60 Day English Fluency Launchpad", description: "Speak English confidently in 60 days with live practice and feedback.", image: "/reference-assets/program-english.png" },
+  { title: "AI Marketing Launchpad", description: "A practical program to help you master AI marketing tools and strategies.", icon: Rocket, accent: "orange" as Accent },
+  { title: "60 Day English Fluency Launchpad", description: "Speak English confidently in 60 days with live practice and feedback.", icon: Contact, accent: "purple" as Accent },
 ];
 
 const events = [
-  { title: "AI Marketing Masterclass", description: "Discover how AI can 10x your marketing results and save hours of work.", date: "Sat, 24 May 2025 · 7:00 PM NPT", image: "/reference-assets/event-ai.png" },
-  { title: "English Fluency Workshop", description: "Learn practical speaking techniques and improve fluency in real conversations.", date: "Sun, 25 May 2025 · 7:00 PM NPT", image: "/reference-assets/event-english.png" },
+  { title: "AI Marketing Masterclass", description: "Discover how AI can 10x your marketing results and save hours of work.", date: "Sat, 24 May 2025 · 7:00 PM NPT", icon: BrainCircuit, accent: "blue" as Accent },
+  { title: "English Fluency Workshop", description: "Learn practical speaking techniques and improve fluency in real conversations.", date: "Sun, 25 May 2025 · 7:00 PM NPT", icon: MessageCircle, accent: "orange" as Accent },
 ];
 
-const masterclasses: { title: string; category: string; meta: string; accent: Accent; image: string }[] = [
-  { title: "Freelancing 101", category: "Career", meta: "60 mins · Beginner", accent: "orange", image: "/reference-assets/course-freelancing.png" },
-  { title: "SEO Masterclass", category: "Marketing", meta: "45 mins · Intermediate", accent: "green", image: "/reference-assets/course-seo.png" },
-  { title: "Ecommerce Masterclass", category: "Business", meta: "50 mins · Beginner", accent: "purple", image: "/reference-assets/course-ecommerce.png" },
-  { title: "Personal Branding Masterclass", category: "Personal Growth", meta: "40 mins · All Levels", accent: "blue", image: "/reference-assets/course-branding.png" },
-  { title: "Social Media Marketing", category: "Marketing", meta: "55 mins · Beginner", accent: "orange", image: "/reference-assets/course-social.png" },
+const masterclasses: { title: string; description: string; category: string; meta: string; accent: Accent; icon: LucideIcon }[] = [
+  { title: "Freelancing 101", description: "Find clients, price your work, and build a confident freelance career.", category: "Career", meta: "60 mins · Beginner", accent: "orange", icon: Laptop },
+  { title: "SEO Masterclass", description: "Improve search visibility with practical keyword and optimization techniques.", category: "Marketing", meta: "45 mins · Intermediate", accent: "green", icon: Search },
+  { title: "Ecommerce Masterclass", description: "Learn the essentials of launching and growing a successful online store.", category: "Business", meta: "50 mins · Beginner", accent: "purple", icon: ShoppingCart },
+  { title: "Personal Branding Masterclass", description: "Build a trusted professional identity that attracts new opportunities.", category: "Personal Growth", meta: "40 mins · All Levels", accent: "blue", icon: UserRound },
+  { title: "Social Media Marketing", description: "Plan engaging content and turn social platforms into growth channels.", category: "Marketing", meta: "55 mins · Beginner", accent: "orange", icon: Megaphone },
 ];
 
-const experts: { name: string; expertise: string; accent: Accent; initials: string }[] = [
+const experts: { name: string; expertise: string; accent: Accent; image: string }[] = [
   { name: "Saurav Shrestha", expertise: "AI & Growth Marketing", accent: "orange", image: "/reference-assets/expert-saurav.png" },
   { name: "Anita Karki", expertise: "English Communication", accent: "blue", image: "/reference-assets/expert-anita.png" },
   { name: "Rajan Adhikari", expertise: "SEO & Digital Marketing", accent: "green", image: "/reference-assets/expert-rajan.png" },
@@ -57,15 +56,18 @@ function SectionHeading({ title, link }: { title: string; link: string }) {
 }
 
 function ProgramCard({ program }: { program: (typeof programs)[number] }) {
-  return <article className="program-card card"><div className="program-art"><Image src={program.image} alt="" fill sizes="(max-width: 760px) 100vw, 300px" /></div><div className="program-content"><h3>{program.title}</h3><p>{program.description}</p><a href="#top">Learn more <ArrowRight size={15} /></a></div></article>;
+  const Icon = program.icon;
+  return <article className="program-card card"><div className={`program-art art-${program.accent}`} aria-hidden="true"><span className="art-cloud cloud-left" /><span className="art-cloud cloud-right" /><span className="art-spark spark-left" /> <span className="art-spark spark-right" /><div className="program-icon"><Icon size={78} strokeWidth={1.6} /></div></div><div className="program-content"><h3>{program.title}</h3><p>{program.description}</p><a href="#top">Learn more <ArrowRight size={15} /></a></div></article>;
 }
 
 function EventCard({ event }: { event: (typeof events)[number] }) {
-  return <article className="event-card card"><div className="event-copy"><div className="badges"><span className="live-badge"><i /> Live</span><span>Online</span><span>Free</span></div><h3>{event.title}</h3><p>{event.description}</p><time>{event.date}</time><a className="event-link" href="#top">Reserve Seat</a></div><div className="event-art"><Image src={event.image} alt="" fill sizes="110px" /></div></article>;
+  const Icon = event.icon;
+  return <article className="event-card card"><div className="event-copy"><div className="badges"><span className="live-badge"><i /> Live</span><span>Online</span><span>Free</span></div><h3>{event.title}</h3><p>{event.description}</p><time>{event.date}</time><a className="event-link" href="#top">Reserve Seat</a></div><div className={`event-art art-${event.accent}`} aria-hidden="true"><span /><Icon size={58} strokeWidth={1.55} /></div></article>;
 }
 
 function MasterclassCard({ item }: { item: (typeof masterclasses)[number] }) {
-  return <article className="masterclass-card card"><div className="course-art"><Image src={item.image} alt="" fill sizes="220px" /></div><div className="course-content"><h3>{item.title}</h3><span className={`pill pill-${item.accent}`}>{item.category}</span><div className="course-bottom"><span>{item.meta}</span><a href="#top" aria-label={`Play ${item.title}`}><Play size={12} fill="currentColor" /></a></div></div></article>;
+  const Icon = item.icon;
+  return <article className="masterclass-card card"><div className={`course-art art-${item.accent}`} aria-hidden="true"><span className="course-orbit" /><Icon size={64} strokeWidth={1.55} /></div><div className="course-content"><h3>{item.title}</h3><p>{item.description}</p><span className={`pill pill-${item.accent}`}>{item.category}</span><div className="course-bottom"><span>{item.meta}</span><a href="#top" aria-label={`Play ${item.title}`}><Play size={13} fill="currentColor" /></a></div></div></article>;
 }
 
 function ExpertCard({ expert, index }: { expert: (typeof experts)[number]; index: number }) {
@@ -116,7 +118,7 @@ export default function HomeClient() {
 
       <section className="content-section process-section" id="stories" data-reveal><div className="section-shell"><div className="centered-heading"><span>Simple by design</span><h2>How Sikumna Works</h2></div><div className="process-grid">{processSteps.map((step, index) => <ProcessStep key={step.title} step={step} index={index} />)}</div></div></section>
 
-      <section className="cta-section section-shell" data-reveal><div className="target-art" aria-hidden="true"><Image src="/reference-assets/target.png" alt="" fill sizes="130px" /></div><div className="cta-copy"><h2>Ready to level up your skills?</h2><p>Join thousands of learners growing with live,<br />practical and relevant education.</p></div><a className="button button-primary" href="#events">Join a Live Masterclass</a></section>
+      <section className="cta-section section-shell" data-reveal><div className="target-art" aria-hidden="true"><span /><Target size={78} strokeWidth={1.45} /></div><div className="cta-copy"><h2>Ready to level up your skills?</h2><p>Join thousands of learners growing with live,<br />practical and relevant education.</p></div><a className="button button-primary" href="#events">Join a Live Masterclass</a></section>
     </main>
 
     <footer className="footer" id="about"><div className="footer-shell section-shell"><div className="footer-brand"><Image src="/sikumna-logo.png" alt="Sikumna" width={185} height={54} /><p>Live mentorship, workshops and expert-led programs to help you grow in your career, business and personal life.</p><div className="socials"><a href="#top" aria-label="Facebook">f</a><a href="#top" aria-label="Instagram">◎</a><a href="#top" aria-label="YouTube">▶</a><a href="#top" aria-label="LinkedIn">in</a></div></div><div className="footer-links"><h2>Explore</h2><a href="#programs">Programs</a><a href="#masterclasses">Free Learning</a><a href="#events">Events</a><a href="#stories">Stories</a></div><div className="footer-links"><h2>Company</h2><a href="#about">About Us</a><a href="#experts">Our Experts</a><a href="#top">Careers</a><a href="#top">Contact Us</a></div><div className="footer-links"><h2>Support</h2><a href="#top">Help Center</a><a href="#top">FAQ</a><a href="#top">Terms of Use</a><a href="#top">Privacy Policy</a></div><div className="newsletter"><h2>Stay Updated</h2><p>Get the latest programs, events and free resources straight to your inbox.</p><form onSubmit={subscribe}><label className="sr-only" htmlFor="newsletter-email">Email address</label><input id="newsletter-email" required type="email" placeholder="Email address" /><button type="submit">Subscribe</button></form><span className="form-status" aria-live="polite">{subscribed ? "Thanks! You’re on the list." : ""}</span></div></div><p className="copyright">© 2026 Sikumna Nepal. All rights reserved.</p></footer>
