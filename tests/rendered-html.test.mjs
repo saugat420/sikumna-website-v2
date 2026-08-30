@@ -50,9 +50,10 @@ test("keeps the homepage assets and responsive implementation in place", async (
 
   await Promise.all([
     access(new URL("../public/sikumna-logo.png", import.meta.url)),
-    access(new URL("../public/generated/sikumna-hero-v2.png", import.meta.url)),
+    access(new URL("../public/generated/sikumna-hero-v3.png", import.meta.url)),
     access(new URL("../public/generated/icons/ai-marketing-launchpad.png", import.meta.url)),
     access(new URL("../public/generated/icons/learn-live.png", import.meta.url)),
+    access(new URL("../public/generated/mentors/prakriti-tamang.png", import.meta.url)),
     access(new URL("../public/og.png", import.meta.url)),
   ]);
 });

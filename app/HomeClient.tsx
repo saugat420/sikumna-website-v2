@@ -32,11 +32,11 @@ const masterclasses: { title: string; description: string; category: string; met
 ];
 
 const experts: { name: string; expertise: string; accent: Accent; image: string }[] = [
-  { name: "Saurav Shrestha", expertise: "AI & Growth Marketing", accent: "orange", image: "/reference-assets/expert-saurav.png" },
-  { name: "Anita Karki", expertise: "English Communication", accent: "blue", image: "/reference-assets/expert-anita.png" },
-  { name: "Rajan Adhikari", expertise: "SEO & Digital Marketing", accent: "green", image: "/reference-assets/expert-rajan.png" },
-  { name: "Prakriti Tamang", expertise: "Ecommerce & Business", accent: "purple", image: "/reference-assets/expert-prakriti.png" },
-  { name: "Bikash Kc", expertise: "Business Strategy", accent: "orange", image: "/reference-assets/expert-bikash.png" },
+  { name: "Saurav Shrestha", expertise: "AI & Growth Marketing", accent: "orange", image: "/generated/mentors/saurav-shrestha.png" },
+  { name: "Anita Karki", expertise: "English Communication", accent: "blue", image: "/generated/mentors/anita-karki.png" },
+  { name: "Rajan Adhikari", expertise: "SEO & Digital Marketing", accent: "green", image: "/generated/mentors/rajan-adhikari.png" },
+  { name: "Prakriti Tamang", expertise: "Ecommerce & Business", accent: "purple", image: "/generated/mentors/prakriti-tamang.png" },
+  { name: "Bikash Kc", expertise: "Business Strategy", accent: "orange", image: "/generated/mentors/bikash-kc.png" },
 ];
 
 const processSteps: { title: string; description: string; accent: Accent; image: string }[] = [
@@ -96,7 +96,7 @@ export default function HomeClient() {
     <main id="top">
       <section className="hero section-shell" aria-labelledby="hero-title">
         <div className="hero-copy"><span className="eyebrow">Learn. Practice. Grow.</span><h1 id="hero-title">Learn skills that<br />matter in real life.</h1><p>Practical live mentorship, workshops, and expert-led programs to help you grow in your career, business, and personal life.</p><div className="hero-actions"><a className="button button-primary" href="#programs">Explore Programs</a><a className="button button-secondary" href="#masterclasses"><Play size={18} fill="currentColor" /> Watch Free Masterclasses</a></div></div>
-        <div className="hero-visual"><Image src="/generated/sikumna-hero-v2.png" alt="A learner studying online at a laptop" fill priority sizes="(max-width: 820px) 100vw, 56vw" /></div>
+        <div className="hero-visual"><Image src="/generated/sikumna-hero-v3.png" alt="A Nepali mentor teaching a learner at a laptop" fill priority sizes="(max-width: 820px) 100vw, 56vw" /></div>
       </section>
 
       <section className="benefits section-shell" aria-label="Why learn with Sikumna" data-reveal>{benefits.map((benefit) => <article className="benefit" key={benefit.title}><span className={`benefit-icon accent-${benefit.accent}`}><Image src={benefit.image} alt="" width={64} height={64} /></span><div><h2>{benefit.title}</h2><p>{benefit.description}</p></div></article>)}</section>
