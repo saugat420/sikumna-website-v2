@@ -40,23 +40,29 @@ test("renders both event registration landing pages", async () => {
   assert.equal(englishResponse.status, 200);
 
   const [aiHtml, englishHtml] = await Promise.all([aiResponse.text(), englishResponse.text()]);
-  assert.match(aiHtml, /AI Marketing Masterclass \| Sikumna Nepal/);
-  assert.match(aiHtml, /Reserve Your Free Seat/);
+  assert.match(aiHtml, /Learn AI Marketing From Scratch In 90 Mins \| Sikumna Nepal/);
+  assert.match(aiHtml, /Reserve My Free Seat/);
+  assert.match(aiHtml, /Hurry! Only 100 Seats Available/);
   assert.match(aiHtml, /What You’ll Learn/);
   assert.match(aiHtml, /Frequently Asked Questions/);
   assert.doesNotMatch(aiHtml, /\/og\.png/);
-  assert.match(englishHtml, /English Fluency Workshop \| Sikumna Nepal/);
+  assert.match(englishHtml, /Speak English Confidently in Daily Life \| Sikumna Nepal/);
+  assert.match(englishHtml, /Join the FREE English Fluency Workshop/);
+  assert.match(englishHtml, /Reserve My FREE Seat/);
   assert.match(englishHtml, /Start Speaking English Confidently Today/);
   assert.match(englishHtml, /Frequently Asked Questions/);
   assert.doesNotMatch(englishHtml, /\/og\.png/);
 });
 
-test("keeps the homepage assets and responsive implementation in place", async () => {
-  const [page, home, css, packageJson] = await Promise.all([
+test("keeps the shared design system, assets, and responsive implementation in place", async () => {
+  const [page, home, css, packageJson, designSystem, designSystemDocs, eventPage] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/HomeClient.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/DesignSystem.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../DESIGN_SYSTEM.md", import.meta.url), "utf8"),
+    readFile(new URL("../app/events/EventLandingPage.tsx", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /<HomeClient \/>/);
@@ -67,6 +73,11 @@ test("keeps the homepage assets and responsive implementation in place", async (
   assert.match(home, /const processSteps/);
   assert.match(css, /@media \(max-width:620px\)/);
   assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /html\.dark/);
+  assert.match(designSystem, /export function Container/);
+  assert.match(designSystem, /fit = "contain"/);
+  assert.match(designSystemDocs, /Future-page checklist/);
+  assert.doesNotMatch(eventPage, /event-hero-art/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
   await Promise.all([

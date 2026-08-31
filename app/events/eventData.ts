@@ -4,10 +4,13 @@ export type EventLandingData = {
   theme: EventTheme;
   kicker: string;
   title: string;
+  supportingLine?: string;
   subtitle: string;
   heroImage: string;
   bulletPoints: string[];
   learnerCount: string;
+  buttonLabel: string;
+  scarcity: string;
   highlights: { icon: string; title: string; description: string }[];
   lessonIntro: string;
   lessons: { icon: string; title: string; description: string }[];
@@ -30,11 +33,13 @@ export type EventLandingData = {
 export const aiMarketingEvent: EventLandingData = {
   theme: "blue",
   kicker: "Free Live Masterclass",
-  title: "AI Marketing Masterclass",
-  subtitle: "Discover how AI can 10x your marketing results and save hours of work.",
+  title: "Learn AI Marketing From Scratch In 90 Mins",
+  subtitle: "In this free masterclass, you’ll learn how AI Marketing can help you build a high-paying freelancer career in 2026—even if you are a beginner.",
   heroImage: "/generated/events/ai-marketing-masterclass-hero.png",
-  bulletPoints: ["Live on Zoom", "90 Minutes", "Interactive Q&A", "100% Free"],
+  bulletPoints: ["Live on Zoom", "90 Minutes", "Beginner Friendly", "Interactive Q&A"],
   learnerCount: "11,000+ learners registered",
+  buttonLabel: "Reserve My Free Seat",
+  scarcity: "Hurry! Only 100 Seats Available.",
   highlights: [
     { icon: "bot", title: "Learn AI Marketing", description: "from scratch" },
     { icon: "sparkles", title: "Practical strategies", description: "you can use" },
@@ -43,11 +48,11 @@ export const aiMarketingEvent: EventLandingData = {
   ],
   lessonIntro: "A complete 90-minute session packed with practical insights.",
   lessons: [
-    { icon: "bot", title: "What is AI Marketing?", description: "Understand AI Marketing and how it is changing the game." },
-    { icon: "chart", title: "Live AI Marketing Demo", description: "Watch a complete marketing campaign built using AI live." },
-    { icon: "route", title: "5-Step AI Marketing Roadmap", description: "A clear roadmap to become an AI-powered marketer." },
-    { icon: "megaphone", title: "AI vs Digital Marketing", description: "Know the key differences, future trends, and what to focus on." },
-    { icon: "wallet", title: "How You Can Earn", description: "Explore freelancing, remote jobs, and business opportunities." },
+    { icon: "bot", title: "What AI Marketing Actually Means", description: "Understand AI Marketing and how it is changing the game." },
+    { icon: "chart", title: "How AI Is Changing Digital Marketing", description: "See how modern marketers use AI to work faster and make better decisions." },
+    { icon: "route", title: "Create Marketing Assets With AI", description: "Write ads, content, emails and landing-page ideas with practical prompts." },
+    { icon: "megaphone", title: "Useful AI Tools for Beginners", description: "Know which tools matter, what they do and where to begin." },
+    { icon: "wallet", title: "Build Freelance Skills Step by Step", description: "Turn practical AI marketing skills into real client opportunities." },
     { icon: "messages", title: "Live Q&A Session", description: "Get your questions answered live at the end." },
   ],
   audiences: [
@@ -83,13 +88,16 @@ export const aiMarketingEvent: EventLandingData = {
 };
 
 export const englishFluencyEvent: EventLandingData = {
-  theme: "green",
+  theme: "blue",
   kicker: "Free Live Workshop",
-  title: "English Fluency Workshop",
-  subtitle: "Speak English confidently in 60 days with proven techniques and live practice.",
+  title: "Speak English Confidently in Daily Life",
+  supportingLine: "Join the FREE English Fluency Workshop",
+  subtitle: "If you understand English but feel nervous while speaking, this workshop will help you learn simple techniques to speak more confidently, form better sentences, and improve your daily conversation.",
   heroImage: "/generated/events/english-fluency-workshop-hero.png",
   bulletPoints: ["Live on Zoom", "120 Minutes", "Interactive Practice", "100% Free"],
   learnerCount: "8,500+ learners registered",
+  buttonLabel: "Reserve My FREE Seat",
+  scarcity: "Only 67 seats remaining… Hurry up!",
   highlights: [
     { icon: "messages", title: "Speak with confidence", description: "in daily life" },
     { icon: "clipboard", title: "Practical techniques", description: "that work" },

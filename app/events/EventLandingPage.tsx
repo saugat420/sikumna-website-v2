@@ -1,40 +1,28 @@
 "use client";
-/* eslint-disable @next/next/no-html-link-for-pages */
 
 import Image from "next/image";
 import {
   ArrowRight, BadgeCheck, BookOpenCheck, Bot, BriefcaseBusiness, CalendarDays,
   ChartNoAxesCombined, CheckCircle2, CircleDollarSign, ClipboardCheck, Clock3,
   GraduationCap, Home, Laptop, Lightbulb, Megaphone, MessageCircleQuestion,
-  MessagesSquare, Mic2, Minus, Plus, Route, ShieldCheck, Sparkles, Store,
-  Target, UsersRound, Video,
+  MessagesSquare, Mic2, Route, ShieldCheck, Sparkles, Store, Target, UsersRound,
+  Video,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FormEvent, useState } from "react";
+import Accordion from "../components/Accordion";
+import { Badge, Button, PageTitle, ResponsiveImage, SectionDescription, SectionTitle } from "../components/DesignSystem";
+import SiteFooter from "../components/SiteFooter";
+import SiteHeader from "../components/SiteHeader";
 import type { EventLandingData } from "./eventData";
 
 const iconMap: Record<string, LucideIcon> = {
-  bot: Bot,
-  sparkles: Sparkles,
-  briefcase: BriefcaseBusiness,
-  route: Route,
-  chart: ChartNoAxesCombined,
-  megaphone: Megaphone,
-  wallet: CircleDollarSign,
-  messages: MessagesSquare,
-  student: GraduationCap,
-  professional: BriefcaseBusiness,
-  target: Target,
-  laptop: Laptop,
-  store: Store,
-  clipboard: ClipboardCheck,
-  users: UsersRound,
-  shield: ShieldCheck,
-  help: MessageCircleQuestion,
-  lightbulb: Lightbulb,
-  book: BookOpenCheck,
-  mic: Mic2,
-  home: Home,
+  bot: Bot, sparkles: Sparkles, briefcase: BriefcaseBusiness, route: Route,
+  chart: ChartNoAxesCombined, megaphone: Megaphone, wallet: CircleDollarSign,
+  messages: MessagesSquare, student: GraduationCap, professional: BriefcaseBusiness,
+  target: Target, laptop: Laptop, store: Store, clipboard: ClipboardCheck,
+  users: UsersRound, shield: ShieldCheck, help: MessageCircleQuestion,
+  lightbulb: Lightbulb, book: BookOpenCheck, mic: Mic2, home: Home,
 };
 
 const learnerAvatars = [
@@ -47,7 +35,7 @@ const learnerAvatars = [
 
 function TopicIcon({ name, size = 22 }: { name: string; size?: number }) {
   const Icon = iconMap[name] ?? CheckCircle2;
-  return <Icon size={size} strokeWidth={1.8} />;
+  return <Icon size={size} strokeWidth={1.8} aria-hidden="true" />;
 }
 
 export default function EventLandingPage({ event }: { event: EventLandingData }) {
@@ -58,68 +46,55 @@ export default function EventLandingPage({ event }: { event: EventLandingData })
     setSubmitted(true);
   }
 
-  return <div className={`event-landing theme-${event.theme}`}>
-    <header className="event-page-header">
-      <div className="event-shell event-nav">
-        <a href="/" className="event-brand" aria-label="Sikumna Nepal home"><Image src="/sikumna-logo.png" alt="Sikumna" width={190} height={64} priority /></a>
-        <nav aria-label="Event page navigation"><a href="/">Home</a><a className="button button-primary" href="#reserve">Join Free {event.theme === "blue" ? "Masterclass" : "Workshop"}</a></nav>
-      </div>
-    </header>
+  return <div className="event-landing">
+    <SiteHeader variant="landing" ctaHref="#reserve" ctaLabel={event.buttonLabel} />
 
     <main>
-      <section className="event-hero event-shell">
+      <section className="event-hero ds-container" aria-labelledby="event-title">
         <div className="event-hero-copy">
-          <span className="event-kicker">{event.kicker}</span>
-          <h1>{event.title}</h1>
-          <p>{event.subtitle}</p>
-          <ul>{event.bulletPoints.map((point) => <li key={point}><CheckCircle2 size={17} /> {point}</li>)}</ul>
-          <a className="event-reserve-button" href="#reserve">Reserve Your Free Seat <ArrowRight size={18} /></a>
-          <div className="event-learners"><div>{learnerAvatars.map((avatar) => <span key={avatar}><Image src={avatar} alt="" fill sizes="32px" /></span>)}</div><strong>{event.learnerCount}</strong></div>
+          <Badge>{event.kicker}</Badge>
+          <PageTitle id="event-title">{event.title}</PageTitle>
+          {event.supportingLine && <p className="event-supporting-line">{event.supportingLine}</p>}
+          <p className="event-hero-description">{event.subtitle}</p>
+          <ul className="event-info-list">{event.bulletPoints.map((point) => <li key={point}><CheckCircle2 size={18} aria-hidden="true" /> {point}</li>)}</ul>
+          <Button href="#reserve" size="lg">{event.buttonLabel} <ArrowRight size={19} /></Button>
+          <p className="event-scarcity"><span aria-hidden="true">●</span> {event.scarcity}</p>
+          <div className="event-learners"><div>{learnerAvatars.map((avatar) => <span key={avatar}><Image src={avatar} alt="" fill sizes="34px" /></span>)}</div><strong>{event.learnerCount}</strong></div>
         </div>
-        <div className="event-hero-art"><Image src={event.heroImage} alt={`${event.title} learner illustration`} fill priority sizes="(max-width: 800px) 100vw, 52vw" /></div>
       </section>
 
-      <section className="event-highlights event-shell" aria-label="Workshop highlights">
+      <section className="event-highlights ds-container" aria-label="Workshop highlights">
         {event.highlights.map((item) => <article key={item.title}><span><TopicIcon name={item.icon} /></span><div><h2>{item.title}</h2><p>{item.description}</p></div></article>)}
       </section>
 
-      <section className="event-content-section event-shell">
-        <div className="event-section-heading"><h2>What You’ll Learn</h2><p>{event.lessonIntro}</p></div>
-        <div className="event-lessons">{event.lessons.map((lesson) => <article key={lesson.title}><span><TopicIcon name={lesson.icon} /></span><h3>{lesson.title}</h3><p>{lesson.description}</p></article>)}</div>
+      <section className="event-content-section ds-container">
+        <div className="event-section-heading"><SectionTitle>What You’ll Learn</SectionTitle><SectionDescription>{event.lessonIntro}</SectionDescription></div>
+        <div className="event-lessons">{event.lessons.map((lesson) => <article className="ds-card" key={lesson.title}><span><TopicIcon name={lesson.icon} /></span><h3>{lesson.title}</h3><p>{lesson.description}</p></article>)}</div>
       </section>
 
-      <section className="event-content-section event-shell">
-        <div className="event-section-heading"><h2>Who Is This For?</h2></div>
+      <section className="event-content-section ds-container">
+        <div className="event-section-heading"><SectionTitle>Who Is This For?</SectionTitle></div>
         <div className="event-audiences">{event.audiences.map((audience) => <article key={audience.label}><span><TopicIcon name={audience.icon} /></span><p>{audience.label}</p></article>)}</div>
       </section>
 
-      <section className="event-instructor event-shell">
-        <div className="event-instructor-photo"><Image src={event.instructor.image} alt={`${event.instructor.name}, workshop instructor`} fill sizes="260px" /></div>
-        <div><span className="event-kicker">Meet Your Mentor</span><h2>{event.instructor.name}</h2><ul>{event.instructor.bullets.map((bullet) => <li key={bullet}><BadgeCheck size={17} /> {bullet}</li>)}</ul></div>
+      <section className="event-instructor ds-container ds-card">
+        <div className="event-instructor-photo"><ResponsiveImage src={event.instructor.image} alt={`${event.instructor.name}, workshop instructor`} sizes="260px" /></div>
+        <div><Badge>Meet Your Mentor</Badge><SectionTitle>{event.instructor.name}</SectionTitle><ul>{event.instructor.bullets.map((bullet) => <li key={bullet}><BadgeCheck size={18} aria-hidden="true" /> {bullet}</li>)}</ul></div>
       </section>
 
-      <section className="event-content-section event-shell">
-        <div className="event-section-heading"><h2>Loved by Thousands of Learners</h2><p><span className="event-stars">★★★★★</span> {event.reviewSummary}</p></div>
-        <div className="event-testimonials">{event.testimonials.map((testimonial) => <article key={testimonial.name}><div className="testimonial-avatar">{testimonial.name.charAt(0)}</div><blockquote>“{testimonial.quote}”</blockquote><strong>{testimonial.name}</strong><span>{testimonial.role}</span></article>)}</div>
+      <section className="event-content-section ds-container">
+        <div className="event-section-heading"><SectionTitle>Loved by Thousands of Learners</SectionTitle><SectionDescription><span className="event-stars">★★★★★</span> {event.reviewSummary}</SectionDescription></div>
+        <div className="event-testimonials">{event.testimonials.map((testimonial) => <article className="ds-card" key={testimonial.name}><div className="testimonial-avatar">{testimonial.name.charAt(0)}</div><blockquote>“{testimonial.quote}”</blockquote><strong>{testimonial.name}</strong><span>{testimonial.role}</span></article>)}</div>
       </section>
 
-      <section className="event-reservation event-shell" id="reserve">
-        <div className="reservation-copy"><h2>{event.reserveTitle}</h2><p>{event.reserveDescription}</p><div className="reservation-facts"><article><CalendarDays size={20} /><div><span>Date</span><strong>{event.date}</strong></div></article><article><Clock3 size={20} /><div><span>Time</span><strong>{event.time}</strong></div></article></div><div className="reservation-meta"><span><Video size={17} /> Live on Zoom</span><span><Clock3 size={17} /> Duration: {event.duration}</span></div></div>
-        <form className="reservation-form" onSubmit={reserveSeat}><h2>Reserve Your Free Seat</h2><label><span>Full Name</span><input required name="name" autoComplete="name" placeholder="Full Name" /></label><label><span>Email Address</span><input required name="email" type="email" autoComplete="email" placeholder="Email Address" /></label><label><span>Phone Number</span><input required name="phone" type="tel" autoComplete="tel" placeholder="Phone Number" /></label><button type="submit">Reserve My Seat Now <ArrowRight size={17} /></button><p className="reservation-privacy">We respect your privacy. No spam ever.</p>{submitted && <p className="reservation-success" role="status">Your seat is reserved. Please check your email for the next steps.</p>}</form>
+      <section className="event-reservation ds-container" id="reserve">
+        <div className="reservation-copy"><SectionTitle>{event.reserveTitle}</SectionTitle><p>{event.reserveDescription}</p><div className="reservation-facts"><article><CalendarDays size={21} aria-hidden="true" /><div><span>Date</span><strong>{event.date}</strong></div></article><article><Clock3 size={21} aria-hidden="true" /><div><span>Time</span><strong>{event.time}</strong></div></article></div><div className="reservation-meta"><span><Video size={18} aria-hidden="true" /> Live on Zoom</span><span><Clock3 size={18} aria-hidden="true" /> Duration: {event.duration}</span></div></div>
+        <form className="reservation-form" onSubmit={reserveSeat}><h2>Reserve Your Free Seat</h2><label><span>First Name</span><input required name="firstName" autoComplete="given-name" placeholder="Enter your first name" /></label><label><span>Email Address</span><input required name="email" type="email" autoComplete="email" placeholder="you@example.com" /></label><label><span>WhatsApp Number</span><input required name="whatsapp" type="tel" autoComplete="tel" placeholder="98XXXXXXXX" /></label><Button type="submit" size="lg">Reserve My Seat Now <ArrowRight size={18} /></Button><p className="reservation-privacy">We respect your privacy. No spam ever.</p>{submitted && <p className="reservation-success" role="status">Your seat is reserved. Please check your email for the next steps.</p>}</form>
       </section>
 
-      <section className="event-content-section event-faq event-shell"><div className="event-section-heading"><h2>Frequently Asked Questions</h2></div><div>{event.faqs.map((faq) => <details key={faq.question}><summary>{faq.question}<Plus className="faq-plus" size={18} /><Minus className="faq-minus" size={18} /></summary><p>{faq.answer}</p></details>)}</div></section>
+      <section className="event-content-section event-faq ds-container"><div className="event-section-heading"><SectionTitle>Frequently Asked Questions</SectionTitle></div><Accordion items={event.faqs} /></section>
     </main>
 
-    <footer className="event-footer">
-      <div className="event-shell event-footer-grid">
-        <div><Image src="/sikumna-logo.png" alt="Sikumna" width={170} height={52} /><p>Practical education to help you grow in your career, business and personal life.</p><div className="event-socials"><a href="/" aria-label="Facebook">f</a><a href="/" aria-label="Instagram">◎</a><a href="/" aria-label="YouTube">▶</a><a href="/" aria-label="LinkedIn">in</a></div></div>
-        <div><h2>Explore</h2><a href="/#programs">Programs</a><a href="/#masterclasses">Free Learning</a><a href="/#events">Events</a><a href="/#stories">Stories</a></div>
-        <div><h2>Company</h2><a href="/#about">About Us</a><a href="/#experts">Our Experts</a><a href="/">Careers</a><a href="/">Contact Us</a></div>
-        <div><h2>Support</h2><a href="/">Help Center</a><a href="/">FAQ</a><a href="/">Terms of Use</a><a href="/">Privacy Policy</a></div>
-        <div><h2>Stay Updated</h2><p>Get the latest programs, events and free resources straight to your inbox.</p><form><label className="sr-only" htmlFor={`footer-email-${event.theme}`}>Email address</label><input id={`footer-email-${event.theme}`} type="email" placeholder="Enter your email" /><button type="button">Subscribe</button></form></div>
-      </div>
-      <p className="event-copyright">© 2026 Sikumna Nepal. All rights reserved.</p>
-    </footer>
+    <SiteFooter variant="landing" />
   </div>;
 }
