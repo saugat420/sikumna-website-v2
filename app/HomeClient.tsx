@@ -1,108 +1,71 @@
-"use client";
-
 import Image from "next/image";
-import { ArrowRight, Play } from "lucide-react";
-import { useEffect } from "react";
-import { ResponsiveImage } from "./components/DesignSystem";
+import { ArrowRight, BarChart3, CheckCircle2, Compass, MessageCircleMore, Play, Sparkles, UsersRound, Video } from "lucide-react";
+import { Badge, Button, Card, Container, Section, SectionDescription, SectionTitle } from "./components/DesignSystem";
+import HomeHero from "./components/home/HomeHero";
 import SiteFooter from "./components/SiteFooter";
 import SiteHeader from "./components/SiteHeader";
 
-type Accent = "orange" | "blue" | "green" | "purple";
-
-const benefits = [
-  { image: "/generated/icons/live-interactive.png", title: "Live & Interactive", description: "Real-time learning with mentors and peers", accent: "orange" as Accent },
-  { image: "/generated/icons/expert-led.png", title: "Expert-Led", description: "Learn from industry professionals", accent: "blue" as Accent },
-  { image: "/generated/icons/practical-relevant.png", title: "Practical & Relevant", description: "Apply skills to real projects and challenges", accent: "green" as Accent },
-  { image: "/generated/icons/learning-community.png", title: "Learning Community", description: "Join a supportive community of learners", accent: "purple" as Accent },
-];
-
 const programs = [
-  { title: "AI Marketing Launchpad", description: "A practical program to help you master AI marketing tools and strategies.", image: "/generated/icons/ai-marketing-launchpad.png" },
-  { title: "60 Day English Fluency Launchpad", description: "Speak English confidently in 60 days with live practice and feedback.", image: "/generated/icons/english-fluency.png" },
+  { category: "Marketing + AI", title: "AI Marketing Launchpad", description: "Build the practical AI marketing skills to research faster, create better campaigns and grow real opportunities.", outcomes: ["Use AI for content, research and campaign ideas", "Build a simple portfolio of practical work", "Learn with live guidance and feedback"], image: "/generated/icons/ai-marketing-launchpad.png" },
+  { category: "Communication", title: "60 Day English Fluency Launchpad", description: "Build the confidence and habits to communicate clearly in daily life, work and new opportunities.", outcomes: ["Practice natural everyday conversations", "Get feedback in supportive live sessions", "Build confidence one small step at a time"], image: "/generated/icons/english-fluency.png" },
 ];
 
 const events = [
-  { title: "AI Marketing Masterclass", description: "Discover how AI can 10x your marketing results and save hours of work.", date: "Sat, 24 May 2025 · 7:00 PM NPT", image: "/generated/icons/ai-masterclass.png", href: "/events/ai-marketing-masterclass" },
-  { title: "English Fluency Workshop", description: "Learn practical speaking techniques and improve fluency in real conversations.", date: "Sun, 25 May 2025 · 7:00 PM NPT", image: "/generated/icons/english-workshop.png", href: "/events/english-fluency-workshop" },
+  { title: "AI Marketing Masterclass", description: "Understand how AI can support practical marketing work and a freelance career—even as a beginner.", date: "Sat, 24 May 2025", time: "7:00 PM NPT", image: "/generated/icons/ai-masterclass.png", href: "/events/ai-marketing-masterclass" },
+  { title: "English Fluency Workshop", description: "Learn approachable speaking techniques for real conversations, work and everyday confidence.", date: "Sun, 25 May 2025", time: "7:00 PM NPT", image: "/generated/icons/english-workshop.png", href: "/events/english-fluency-workshop" },
 ];
 
-const masterclasses: { title: string; description: string; category: string; meta: string; accent: Accent; image: string }[] = [
-  { title: "Freelancing 101", description: "Find clients, price your work, and build a confident freelance career.", category: "Career", meta: "60 mins · Beginner", accent: "orange", image: "/generated/icons/freelancing.png" },
-  { title: "SEO Masterclass", description: "Improve search visibility with practical keyword and optimization techniques.", category: "Marketing", meta: "45 mins · Intermediate", accent: "green", image: "/generated/icons/seo.png" },
-  { title: "Ecommerce Masterclass", description: "Learn the essentials of launching and growing a successful online store.", category: "Business", meta: "50 mins · Beginner", accent: "purple", image: "/generated/icons/ecommerce.png" },
-  { title: "Personal Branding Masterclass", description: "Build a trusted professional identity that attracts new opportunities.", category: "Personal Growth", meta: "40 mins · All Levels", accent: "blue", image: "/generated/icons/personal-branding.png" },
-  { title: "Social Media Marketing", description: "Plan engaging content and turn social platforms into growth channels.", category: "Marketing", meta: "55 mins · Beginner", accent: "orange", image: "/generated/icons/social-media.png" },
+const masterclasses = [
+  { title: "Freelancing 101", category: "Career", duration: "60 min", expert: "Sikumna Team", image: "/generated/icons/freelancing.png", description: "Build the foundations for finding clients, pricing your work and starting a sustainable freelance journey." },
+  { title: "SEO Masterclass", category: "Marketing", duration: "45 min", expert: "Digital Marketing Team", image: "/generated/icons/seo.png", description: "Learn practical ways to improve search visibility and make better content decisions." },
+  { title: "Ecommerce Masterclass", category: "Business", duration: "50 min", expert: "Business Team", image: "/generated/icons/ecommerce.png", description: "Understand the essentials of launching and growing an online store with confidence." },
+  { title: "Personal Branding Masterclass", category: "Career Growth", duration: "40 min", expert: "Growth Team", image: "/generated/icons/personal-branding.png", description: "Create a professional identity that helps the right opportunities find you." },
 ];
 
-const experts: { name: string; expertise: string; accent: Accent; image: string }[] = [
-  { name: "Saurav Shrestha", expertise: "AI & Growth Marketing", accent: "orange", image: "/generated/mentors/saurav-shrestha.png" },
-  { name: "Anita Karki", expertise: "English Communication", accent: "blue", image: "/generated/mentors/anita-karki.png" },
-  { name: "Rajan Adhikari", expertise: "SEO & Digital Marketing", accent: "green", image: "/generated/mentors/rajan-adhikari.png" },
-  { name: "Prakriti Tamang", expertise: "Ecommerce & Business", accent: "purple", image: "/generated/mentors/prakriti-tamang.png" },
-  { name: "Bikash Kc", expertise: "Business Strategy", accent: "orange", image: "/generated/mentors/bikash-kc.png" },
+const experts = [
+  { name: "Saugat Basnet", expertise: "AI & Growth Marketing", bio: "Helps learners turn modern marketing tools into practical skills and real client opportunities.", image: "/generated/mentors/saurav-shrestha.png" },
+  { name: "Anita Karki", expertise: "English Communication", bio: "Makes English communication feel clear, human and useful for everyday confidence.", image: "/generated/mentors/anita-karki.png" },
+  { name: "Prakriti Tamang", expertise: "Ecommerce & Business", bio: "Shares practical approaches to building and growing ideas people can actually use.", image: "/generated/mentors/prakriti-tamang.png" },
 ];
 
-const processSteps: { title: string; description: string; accent: Accent; image: string }[] = [
-  { title: "Explore", description: "Browse programs, events and free resources.", accent: "orange", image: "/generated/icons/explore.png" },
-  { title: "Enroll", description: "Join programs or reserve your seat for live events.", accent: "blue", image: "/generated/icons/enroll.png" },
-  { title: "Learn Live", description: "Attend live sessions, practice, and collaborate with peers.", accent: "green", image: "/generated/icons/learn-live.png" },
-  { title: "Grow", description: "Apply your skills and achieve your personal and professional goals.", accent: "purple", image: "/generated/icons/grow.png" },
+const testimonials = [
+  { quote: "The session felt practical from the first minute. I left knowing what to work on next.", name: "Rajan Shrestha", role: "Freelancer" },
+  { quote: "The teaching style was simple, supportive and easy to apply in real life.", name: "Prakriti Tamang", role: "Student" },
+  { quote: "I liked that there was space to ask questions instead of only watching a recording.", name: "Sushil Adhikari", role: "Working professional" },
 ];
 
-function SectionHeading({ title, link }: { title: string; link: string }) {
-  return <div className="section-heading"><h2>{title}</h2><a href="#top">{link} <ArrowRight size={16} /></a></div>;
+function SectionIntro({ eyebrow, title, description, align = "left" }: { eyebrow: string; title: string; description?: string; align?: "left" | "center" }) {
+  return <div className={`section-intro section-intro-${align}`}><Badge>{eyebrow}</Badge><SectionTitle>{title}</SectionTitle>{description && <SectionDescription>{description}</SectionDescription>}</div>;
 }
 
-function ProgramCard({ program }: { program: (typeof programs)[number] }) {
-  return <article className="program-card card"><div className="program-art"><ResponsiveImage src={program.image} alt="" sizes="(max-width: 620px) 100vw, 320px" /></div><div className="program-content"><h3>{program.title}</h3><p>{program.description}</p><a href="#top">Learn more <ArrowRight size={15} /></a></div></article>;
+function ProgramFeature({ program, reverse }: { program: (typeof programs)[number]; reverse?: boolean }) {
+  return <article className={`program-feature ${reverse ? "program-feature-reverse" : ""}`}>
+    <div className="program-feature-art"><Image src={program.image} alt={`${program.title} illustration`} fill sizes="(max-width: 760px) 100vw, 50vw" /></div>
+    <div className="program-feature-copy"><Badge>{program.category}</Badge><h3>{program.title}</h3><p>{program.description}</p><ul>{program.outcomes.map((outcome) => <li key={outcome}><CheckCircle2 size={19} />{outcome}</li>)}</ul><a href="#events" className="text-link">Explore {program.title} <ArrowRight size={17} /></a></div>
+  </article>;
 }
 
 function EventCard({ event }: { event: (typeof events)[number] }) {
-  return <article className="event-card card"><div className="event-copy"><div className="badges"><span className="live-badge"><i /> Live</span><span>Online</span><span>Free</span></div><h3>{event.title}</h3><p>{event.description}</p><time>{event.date}</time><a className="event-link" href={event.href}>Reserve Seat <ArrowRight size={14} /></a></div><div className="event-art"><ResponsiveImage src={event.image} alt="" sizes="130px" /></div></article>;
+  return <Card className="live-event-card"><div className="live-event-copy"><div className="event-tags"><span><i /> Live</span><span>Online</span><span>Free</span></div><h3>{event.title}</h3><p>{event.description}</p><div className="event-date"><span>{event.date}</span><span>{event.time}</span></div><Button href={event.href} size="md">Reserve your seat <ArrowRight size={17} /></Button></div><div className="live-event-art"><Image src={event.image} alt="" fill sizes="(max-width: 760px) 90vw, 35vw" /></div></Card>;
 }
 
-function MasterclassCard({ item }: { item: (typeof masterclasses)[number] }) {
-  return <article className="masterclass-card card"><div className="course-art"><ResponsiveImage src={item.image} alt="" sizes="(max-width: 620px) 76vw, 230px" /></div><div className="course-content"><h3>{item.title}</h3><p>{item.description}</p><span className={`pill pill-${item.accent}`}>{item.category}</span><div className="course-bottom"><span>{item.meta}</span><a href="#top" aria-label={`Play ${item.title}`}><Play size={13} fill="currentColor" /></a></div></div></article>;
-}
-
-function ExpertCard({ expert, index }: { expert: (typeof experts)[number]; index: number }) {
-  return <article className="expert-card card"><div className={`expert-avatar avatar-${index + 1}`}><ResponsiveImage src={expert.image} alt={`${expert.name} profile`} fit="cover" sizes="100px" /></div><h3>{expert.name}</h3><span className={`pill pill-${expert.accent}`}>{expert.expertise}</span><a className="linkedin-mark" href="#top" aria-label={`${expert.name} on LinkedIn`}>in</a></article>;
-}
-
-function ProcessStep({ step, index }: { step: (typeof processSteps)[number]; index: number }) {
-  return <article className={`process-card card accent-${step.accent}`}><span className="step-number">{index + 1}</span><div className="step-icon"><ResponsiveImage src={step.image} alt="" sizes="64px" /></div><h3>{step.title}</h3><p>{step.description}</p>{index < processSteps.length - 1 && <span className="step-arrow" aria-hidden="true">→</span>}</article>;
+function LearningCard({ item }: { item: (typeof masterclasses)[number] }) {
+  return <Card className="learning-card"><div className="learning-card-art"><Image src={item.image} alt="" fill sizes="(max-width: 760px) 100vw, 33vw" /></div><div className="learning-card-copy"><span>{item.category}</span><h3>{item.title}</h3><p>{item.description}</p><div><span>{item.duration}</span><span>{item.expert}</span></div><a href="#top" aria-label={`Watch ${item.title}`}><Play size={16} fill="currentColor" /></a></div></Card>;
 }
 
 export default function HomeClient() {
-  useEffect(() => {
-    const nodes = document.querySelectorAll<HTMLElement>("[data-reveal]");
-    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")), { threshold: .12 });
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, []);
-
-  return <>
-    <SiteHeader />
-
+  return <><SiteHeader />
     <main id="top">
-      <section className="hero section-shell" aria-labelledby="hero-title">
-        <div className="hero-copy"><span className="eyebrow">Learn. Practice. Grow.</span><h1 id="hero-title">Learn skills that<br />matter in real life.</h1><p>Practical live mentorship, workshops, and expert-led programs to help you grow in your career, business, and personal life.</p><div className="hero-actions"><a className="button button-primary" href="#programs">Explore Programs</a><a className="button button-secondary" href="#masterclasses"><Play size={18} fill="currentColor" /> Watch Free Masterclasses</a></div></div>
-        <div className="hero-visual"><ResponsiveImage src="/generated/sikumna-hero-v3.png" alt="A Nepali mentor teaching a learner at a laptop" priority sizes="(max-width: 820px) 100vw, 56vw" /></div>
-      </section>
-
-      <section className="benefits section-shell" aria-label="Why learn with Sikumna" data-reveal>{benefits.map((benefit) => <article className="benefit" key={benefit.title}><span className={`benefit-icon accent-${benefit.accent}`}><Image src={benefit.image} alt="" width={64} height={64} /></span><div><h2>{benefit.title}</h2><p>{benefit.description}</p></div></article>)}</section>
-
-      <section className="program-event-section section-shell" id="programs" data-reveal><div className="program-column"><SectionHeading title="Featured Programs" link="View all programs" /><div className="program-grid">{programs.map((program) => <ProgramCard key={program.title} program={program} />)}</div></div><div className="event-column" id="events"><SectionHeading title="Upcoming Live Events" link="View all events" /><div className="event-list">{events.map((event) => <EventCard key={event.title} event={event} />)}</div></div></section>
-
-      <section className="content-section masterclass-section" id="masterclasses" data-reveal><div className="section-shell"><SectionHeading title="Free Masterclass Library" link="View all masterclasses" /><div className="masterclass-grid">{masterclasses.map((item) => <MasterclassCard key={item.title} item={item} />)}</div></div></section>
-
-      <section className="content-section section-shell" id="experts" data-reveal><SectionHeading title="Meet Our Experts" link="View all experts" /><div className="expert-grid">{experts.map((expert, index) => <ExpertCard key={expert.name} expert={expert} index={index} />)}</div></section>
-
-      <section className="content-section process-section" id="stories" data-reveal><div className="section-shell"><div className="centered-heading"><span>Simple by design</span><h2>How Sikumna Works</h2></div><div className="process-grid">{processSteps.map((step, index) => <ProcessStep key={step.title} step={step} index={index} />)}</div></div></section>
-
-      <section className="cta-section section-shell" data-reveal><div className="target-art" aria-hidden="true"><ResponsiveImage src="/generated/icons/target-cta.png" alt="" sizes="140px" /></div><div className="cta-copy"><h2>Ready to level up your skills?</h2><p>Join thousands of learners growing with live,<br />practical and relevant education.</p></div><a className="button button-primary" href="#events">Join a Live Masterclass</a></section>
-    </main>
-
-    <SiteFooter />
+      <HomeHero />
+      <section className="trust-strip"><Container><span>Live, practical learning</span><span><Video size={18} /> Interactive sessions</span><span><UsersRound size={18} /> Learn with practitioners</span><span><Sparkles size={18} /> Skills for real life</span></Container></section>
+      <Section className="how-section"><Container><SectionIntro eyebrow="How it works" title="From curiosity to real-world skill" description="A clear, supportive learning path made for progress you can actually use." align="center" /><div className="how-steps">{[{ icon: Compass, title: "Discover", copy: "Browse programs, masterclasses and learning resources around your next goal." }, { icon: Video, title: "Learn live", copy: "Learn directly from experienced practitioners through live sessions and mentorship." }, { icon: BarChart3, title: "Apply & grow", copy: "Use what you learn in your career, business or everyday life." }].map(({ icon: Icon, title, copy }, index) => <article key={title}><span className="how-number">0{index + 1}</span><Icon size={31} /><h3>{title}</h3><p>{copy}</p></article>)}</div></Container></Section>
+      <Section id="programs" className="programs-section"><Container><SectionIntro eyebrow="Programs" title="Programs built around real outcomes" description="Learn practical skills through structured live mentorship and implementation." /><div className="program-features">{programs.map((program, index) => <ProgramFeature key={program.title} program={program} reverse={index === 1} />)}</div></Container></Section>
+      <Section id="events" className="events-section"><Container><SectionIntro eyebrow="Live now / upcoming" title="Learn with us live" description="Small, focused sessions designed to help you start with clarity." /><div className="live-events-grid">{events.map((event) => <EventCard key={event.title} event={event} />)}</div></Container></Section>
+      <Section id="masterclasses" className="learning-section"><Container><SectionIntro eyebrow="Free learning" title="Start learning for free" description="Watch practical masterclasses from experts across marketing, freelancing, SEO, ecommerce, personal branding and more." /><Card className="featured-learning"><div className="featured-learning-art"><Image src={masterclasses[0].image} alt="Freelancing 101 masterclass" fill sizes="(max-width: 760px) 100vw, 55vw" /></div><div className="featured-learning-copy"><Badge>Featured masterclass</Badge><h3>{masterclasses[0].title}</h3><p>{masterclasses[0].description}</p><div className="learning-meta"><span>{masterclasses[0].duration}</span><span>{masterclasses[0].expert}</span></div><Button href="#top" variant="secondary">Watch free class <Play size={16} fill="currentColor" /></Button></div></Card><div className="learning-grid">{masterclasses.slice(1).map((item) => <LearningCard key={item.title} item={item} />)}</div></Container></Section>
+      <Section id="experts" className="experts-section"><Container><SectionIntro eyebrow="Learn from practitioners" title="Learn from people who actually do the work" description="Guidance from people who understand both the work and the realities of building a career in Nepal." /><div className="experts-grid">{experts.map((expert) => <Card className="expert-feature" key={expert.name}><div className="expert-image"><Image src={expert.image} alt={`${expert.name}, ${expert.expertise}`} fill sizes="(max-width: 760px) 100vw, 33vw" /></div><div><span>{expert.expertise}</span><h3>{expert.name}</h3><p>{expert.bio}</p><a href="#top" className="text-link">View profile <ArrowRight size={17} /></a></div></Card>)}</div></Container></Section>
+      <Section className="why-section"><Container><div className="why-layout"><SectionIntro eyebrow="Why Sikumna" title="Education designed to be used, not just watched" /><div className="why-reasons">{[{ title: "Practical by design", copy: "Lessons focus on skills you can immediately implement." }, { title: "Learn from practitioners", copy: "Programs are created with people who actively work in the field." }, { title: "Live & interactive", copy: "Ask questions, practice and receive feedback instead of passively watching." }].map((reason, index) => <article key={reason.title}><span>0{index + 1}</span><div><h3>{reason.title}</h3><p>{reason.copy}</p></div></article>)}</div></div></Container></Section>
+      <Section id="stories" className="testimonials-section"><Container><SectionIntro eyebrow="Learner outcomes" title="Loved by learners across Nepal" align="center" /><div className="testimonial-layout"><blockquote className="testimonial-featured">“{testimonials[0].quote}”<footer><strong>{testimonials[0].name}</strong><span>{testimonials[0].role}</span></footer></blockquote><div>{testimonials.slice(1).map((review) => <Card className="testimonial-small" key={review.name}><MessageCircleMore size={24} /><blockquote>“{review.quote}”</blockquote><strong>{review.name}</strong><span>{review.role}</span></Card>)}</div></div></Container></Section>
+      <Section className="final-cta"><Container><div><Badge>Your next skill starts here</Badge><h2>What do you want to learn next?</h2><p>Explore practical programs or join an upcoming live masterclass.</p></div><div><Button href="#programs" variant="secondary" size="lg">Explore programs</Button><Button href="#events" size="lg">Join a live masterclass <ArrowRight size={19} /></Button></div></Container></Section>
+    </main><SiteFooter />
   </>;
 }
