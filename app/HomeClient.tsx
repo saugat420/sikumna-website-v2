@@ -19,8 +19,8 @@ const programs = [
 ];
 
 const events = [
-  { title: "AI Marketing Masterclass", description: "Discover how AI can 10x your marketing results and save hours of work.", date: "Sat, 24 May 2025 · 7:00 PM NPT", image: "/generated/icons/ai-masterclass.png" },
-  { title: "English Fluency Workshop", description: "Learn practical speaking techniques and improve fluency in real conversations.", date: "Sun, 25 May 2025 · 7:00 PM NPT", image: "/generated/icons/english-workshop.png" },
+  { title: "AI Marketing Masterclass", description: "Discover how AI can 10x your marketing results and save hours of work.", date: "Sat, 24 May 2025 · 7:00 PM NPT", image: "/generated/icons/ai-masterclass.png", href: "/events/ai-marketing-masterclass" },
+  { title: "English Fluency Workshop", description: "Learn practical speaking techniques and improve fluency in real conversations.", date: "Sun, 25 May 2025 · 7:00 PM NPT", image: "/generated/icons/english-workshop.png", href: "/events/english-fluency-workshop" },
 ];
 
 const masterclasses: { title: string; description: string; category: string; meta: string; accent: Accent; image: string }[] = [
@@ -55,7 +55,7 @@ function ProgramCard({ program }: { program: (typeof programs)[number] }) {
 }
 
 function EventCard({ event }: { event: (typeof events)[number] }) {
-  return <article className="event-card card"><div className="event-copy"><div className="badges"><span className="live-badge"><i /> Live</span><span>Online</span><span>Free</span></div><h3>{event.title}</h3><p>{event.description}</p><time>{event.date}</time><a className="event-link" href="#top">Reserve Seat</a></div><div className="event-art"><Image src={event.image} alt="" fill sizes="130px" /></div></article>;
+  return <article className="event-card card"><div className="event-copy"><div className="badges"><span className="live-badge"><i /> Live</span><span>Online</span><span>Free</span></div><h3>{event.title}</h3><p>{event.description}</p><time>{event.date}</time><a className="event-link" href={event.href}>Reserve Seat <ArrowRight size={14} /></a></div><div className="event-art"><Image src={event.image} alt="" fill sizes="130px" /></div></article>;
 }
 
 function MasterclassCard({ item }: { item: (typeof masterclasses)[number] }) {

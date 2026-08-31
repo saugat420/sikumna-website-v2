@@ -1,0 +1,138 @@
+export type EventTheme = "blue" | "green";
+
+export type EventLandingData = {
+  theme: EventTheme;
+  kicker: string;
+  title: string;
+  subtitle: string;
+  heroImage: string;
+  bulletPoints: string[];
+  learnerCount: string;
+  highlights: { icon: string; title: string; description: string }[];
+  lessonIntro: string;
+  lessons: { icon: string; title: string; description: string }[];
+  audiences: { icon: string; label: string }[];
+  instructor: {
+    name: string;
+    image: string;
+    bullets: string[];
+  };
+  reviewSummary: string;
+  testimonials: { quote: string; name: string; role: string }[];
+  reserveTitle: string;
+  reserveDescription: string;
+  date: string;
+  time: string;
+  duration: string;
+  faqs: { question: string; answer: string }[];
+};
+
+export const aiMarketingEvent: EventLandingData = {
+  theme: "blue",
+  kicker: "Free Live Masterclass",
+  title: "AI Marketing Masterclass",
+  subtitle: "Discover how AI can 10x your marketing results and save hours of work.",
+  heroImage: "/generated/events/ai-marketing-masterclass-hero.png",
+  bulletPoints: ["Live on Zoom", "90 Minutes", "Interactive Q&A", "100% Free"],
+  learnerCount: "11,000+ learners registered",
+  highlights: [
+    { icon: "bot", title: "Learn AI Marketing", description: "from scratch" },
+    { icon: "sparkles", title: "Practical strategies", description: "you can use" },
+    { icon: "briefcase", title: "Live examples", description: "and case studies" },
+    { icon: "route", title: "Step-by-step roadmap", description: "to get started" },
+  ],
+  lessonIntro: "A complete 90-minute session packed with practical insights.",
+  lessons: [
+    { icon: "bot", title: "What is AI Marketing?", description: "Understand AI Marketing and how it is changing the game." },
+    { icon: "chart", title: "Live AI Marketing Demo", description: "Watch a complete marketing campaign built using AI live." },
+    { icon: "route", title: "5-Step AI Marketing Roadmap", description: "A clear roadmap to become an AI-powered marketer." },
+    { icon: "megaphone", title: "AI vs Digital Marketing", description: "Know the key differences, future trends, and what to focus on." },
+    { icon: "wallet", title: "How You Can Earn", description: "Explore freelancing, remote jobs, and business opportunities." },
+    { icon: "messages", title: "Live Q&A Session", description: "Get your questions answered live at the end." },
+  ],
+  audiences: [
+    { icon: "student", label: "Students" },
+    { icon: "professional", label: "Working Professionals" },
+    { icon: "target", label: "Job Seekers" },
+    { icon: "laptop", label: "Freelancers" },
+    { icon: "store", label: "Business Owners" },
+    { icon: "megaphone", label: "Marketers" },
+  ],
+  instructor: {
+    name: "Saugat Basnet",
+    image: "/generated/mentors/saurav-shrestha.png",
+    bullets: ["Digital Marketing Expert & Educator", "Trained 14,000+ students", "9+ years of real-world experience", "Helped 1,000+ businesses grow online", "Founder of Sikumna Nepal"],
+  },
+  reviewSummary: "4.9/5 from 1,000+ reviews",
+  testimonials: [
+    { quote: "The best masterclass I have ever attended. Very practical and eye-opening!", name: "Bikram Thapa", role: "Digital Marketer" },
+    { quote: "Saugat sir explains complex things in the simplest way. Highly recommended.", name: "Anita Karki", role: "Business Owner" },
+    { quote: "I learned more in 90 minutes than months of watching random videos.", name: "Rajan Shrestha", role: "Freelancer" },
+  ],
+  reserveTitle: "Join Live & Transform Your Marketing With AI",
+  reserveDescription: "Seats are limited. Reserve your spot now and receive the joining details by email.",
+  date: "Sat, 24 May 2025",
+  time: "7:00 PM NPT",
+  duration: "90 Minutes",
+  faqs: [
+    { question: "Is this masterclass really free?", answer: "Yes. The live AI Marketing Masterclass is completely free, but registration is required because seats are limited." },
+    { question: "Do I need any prior marketing experience?", answer: "No. The session starts with the fundamentals and is suitable for complete beginners." },
+    { question: "Will I get the recording?", answer: "Registered learners will receive an update after the session if a replay is made available." },
+    { question: "How will I get the joining link?", answer: "We will email the Zoom joining details to the address you use during registration." },
+  ],
+};
+
+export const englishFluencyEvent: EventLandingData = {
+  theme: "green",
+  kicker: "Free Live Workshop",
+  title: "English Fluency Workshop",
+  subtitle: "Speak English confidently in 60 days with proven techniques and live practice.",
+  heroImage: "/generated/events/english-fluency-workshop-hero.png",
+  bulletPoints: ["Live on Zoom", "120 Minutes", "Interactive Practice", "100% Free"],
+  learnerCount: "8,500+ learners registered",
+  highlights: [
+    { icon: "messages", title: "Speak with confidence", description: "in daily life" },
+    { icon: "clipboard", title: "Practical techniques", description: "that work" },
+    { icon: "users", title: "Live practice", description: "and feedback" },
+    { icon: "shield", title: "Improve in just", description: "60 days" },
+  ],
+  lessonIntro: "A power-packed 2-hour workshop to transform your English speaking.",
+  lessons: [
+    { icon: "help", title: "Why You Struggle To Speak English", description: "Understand the real reasons and how to overcome them." },
+    { icon: "lightbulb", title: "7 Practical Techniques That Work", description: "Easy techniques to improve your fluency quickly." },
+    { icon: "book", title: "Think in English, Not Translate", description: "Learn how to think in English naturally." },
+    { icon: "mic", title: "Speak Fluently In Any Situation", description: "Daily life, office, meetings, interviews and more." },
+    { icon: "shield", title: "Build Confidence That Lasts", description: "Overcome fear and speak without hesitation." },
+    { icon: "messages", title: "Live Practice & Feedback", description: "Practice speaking and get live feedback." },
+  ],
+  audiences: [
+    { icon: "student", label: "Students" },
+    { icon: "professional", label: "Professionals" },
+    { icon: "target", label: "Job Seekers" },
+    { icon: "store", label: "Entrepreneurs" },
+    { icon: "home", label: "Homemakers" },
+    { icon: "messages", label: "Anyone who wants to speak English" },
+  ],
+  instructor: {
+    name: "Smriti Ma’am",
+    image: "/generated/mentors/anita-karki.png",
+    bullets: ["English Communication Expert", "Trained 50,000+ learners", "6+ years of teaching experience", "Specialized in spoken English and communication skills"],
+  },
+  reviewSummary: "4.9/5 from 800+ reviews",
+  testimonials: [
+    { quote: "Smriti ma’am makes learning fun and easy. My confidence improved a lot!", name: "Prakriti Tamang", role: "Student" },
+    { quote: "The techniques are super practical. I can use them every day.", name: "Sushil Adhikari", role: "Working Professional" },
+    { quote: "Best workshop for anyone who wants to speak English fluently.", name: "Neha KC", role: "Job Seeker" },
+  ],
+  reserveTitle: "Start Speaking English Confidently Today",
+  reserveDescription: "Seats are limited. Reserve your spot now and receive the joining details by email.",
+  date: "Sun, 25 May 2025",
+  time: "7:00 PM NPT",
+  duration: "120 Minutes",
+  faqs: [
+    { question: "Is this workshop really free?", answer: "Yes. The live English Fluency Workshop is completely free, but advance registration is required." },
+    { question: "Do I need to know English already?", answer: "Only basic understanding is helpful. The workshop is designed to support beginners and developing speakers." },
+    { question: "Will I get the recording?", answer: "Registered learners will receive an update after the workshop if a replay becomes available." },
+    { question: "How will I get the joining link?", answer: "The Zoom joining link and reminders will be sent to your registration email." },
+  ],
+};
