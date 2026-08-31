@@ -1,7 +1,7 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages */
 
 import Image from "next/image";
-import Link from "next/link";
 import {
   ArrowRight, BadgeCheck, BookOpenCheck, Bot, BriefcaseBusiness, CalendarDays,
   ChartNoAxesCombined, CheckCircle2, CircleDollarSign, ClipboardCheck, Clock3,
@@ -61,8 +61,8 @@ export default function EventLandingPage({ event }: { event: EventLandingData })
   return <div className={`event-landing theme-${event.theme}`}>
     <header className="event-page-header">
       <div className="event-shell event-nav">
-        <Link href="/" className="event-brand" aria-label="Sikumna Nepal home"><Image src="/sikumna-logo.png" alt="Sikumna" width={190} height={64} priority /></Link>
-        <nav aria-label="Event page navigation"><Link href="/">Home</Link><a className="button button-primary" href="#reserve">Join Free {event.theme === "blue" ? "Masterclass" : "Workshop"}</a></nav>
+        <a href="/" className="event-brand" aria-label="Sikumna Nepal home"><Image src="/sikumna-logo.png" alt="Sikumna" width={190} height={64} priority /></a>
+        <nav aria-label="Event page navigation"><a href="/">Home</a><a className="button button-primary" href="#reserve">Join Free {event.theme === "blue" ? "Masterclass" : "Workshop"}</a></nav>
       </div>
     </header>
 
@@ -113,10 +113,10 @@ export default function EventLandingPage({ event }: { event: EventLandingData })
 
     <footer className="event-footer">
       <div className="event-shell event-footer-grid">
-        <div><Image src="/sikumna-logo.png" alt="Sikumna" width={170} height={52} /><p>Practical education to help you grow in your career, business and personal life.</p><div className="event-socials"><Link href="/" aria-label="Facebook">f</Link><Link href="/" aria-label="Instagram">◎</Link><Link href="/" aria-label="YouTube">▶</Link><Link href="/" aria-label="LinkedIn">in</Link></div></div>
-        <div><h2>Explore</h2><Link href="/#programs">Programs</Link><Link href="/#masterclasses">Free Learning</Link><Link href="/#events">Events</Link><Link href="/#stories">Stories</Link></div>
-        <div><h2>Company</h2><Link href="/#about">About Us</Link><Link href="/#experts">Our Experts</Link><Link href="/">Careers</Link><Link href="/">Contact Us</Link></div>
-        <div><h2>Support</h2><Link href="/">Help Center</Link><Link href="/">FAQ</Link><Link href="/">Terms of Use</Link><Link href="/">Privacy Policy</Link></div>
+        <div><Image src="/sikumna-logo.png" alt="Sikumna" width={170} height={52} /><p>Practical education to help you grow in your career, business and personal life.</p><div className="event-socials"><a href="/" aria-label="Facebook">f</a><a href="/" aria-label="Instagram">◎</a><a href="/" aria-label="YouTube">▶</a><a href="/" aria-label="LinkedIn">in</a></div></div>
+        <div><h2>Explore</h2><a href="/#programs">Programs</a><a href="/#masterclasses">Free Learning</a><a href="/#events">Events</a><a href="/#stories">Stories</a></div>
+        <div><h2>Company</h2><a href="/#about">About Us</a><a href="/#experts">Our Experts</a><a href="/">Careers</a><a href="/">Contact Us</a></div>
+        <div><h2>Support</h2><a href="/">Help Center</a><a href="/">FAQ</a><a href="/">Terms of Use</a><a href="/">Privacy Policy</a></div>
         <div><h2>Stay Updated</h2><p>Get the latest programs, events and free resources straight to your inbox.</p><form><label className="sr-only" htmlFor={`footer-email-${event.theme}`}>Email address</label><input id={`footer-email-${event.theme}`} type="email" placeholder="Enter your email" /><button type="button">Subscribe</button></form></div>
       </div>
       <p className="event-copyright">© 2026 Sikumna Nepal. All rights reserved.</p>
