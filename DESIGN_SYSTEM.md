@@ -50,3 +50,7 @@ Validate at `390`, `430`, `768`, `1024`, `1280`, and `1440` pixels. Check no hor
 1. Reuse the shared container, type scale, button, card, image, header, footer, theme, and accordion systems.
 2. Preserve real routes, metadata, forms, analytics, and integrations. The current registration and newsletter forms are client-side confirmation flows; do not claim a webhook or tracking integration exists unless it is added separately.
 3. Run lint, TypeScript checks, production build/tests, then browser QA in both themes before publishing.
+
+Every feature is considered incomplete until it has passed QA.
+
+IMPLEMENT → TEST → INSPECT → FIX → RETEST → REPORT

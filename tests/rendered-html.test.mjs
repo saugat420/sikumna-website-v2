@@ -90,6 +90,7 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.match(page, /<HomeClient \/>/);
   assert.match(home, /const events/);
   assert.match(home, /const testimonials/);
+  assert.match(home, /ReviewerIdentity/);
   assert.match(home, /from "\.\.\/data\/programs"/);
   assert.match(layout, /className="dark"/);
   assert.doesNotMatch(layout, /prefers-color-scheme/);
@@ -102,6 +103,8 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.match(designSystemDocs, /Future-page checklist/);
   assert.match(architecture, /Development authentication/);
   assert.doesNotMatch(eventPage, /event-hero-art/);
+  assert.doesNotMatch(eventPage, /RotatingWords|event-animated-line/);
+  assert.match(css, /reviewer-identity/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
   await Promise.all([
