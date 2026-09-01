@@ -1,5 +1,7 @@
 # Sikumna Nepal design system
 
+Dark mode is the first-visit default. The stored manual choice is authoritative across every route; system preference is intentionally ignored. Dark mode uses the transparent white-wordmark asset, while light mode uses the transparent dark-wordmark asset. Both variants keep identical dimensions so switching never shifts the layout.
+
 ## Foundation
 
 - Font: Manrope, used globally.

@@ -9,6 +9,7 @@ import Accordion from "../components/Accordion";
 import { Badge, Button, Card, Container, PageTitle, Section, SectionDescription, SectionTitle } from "../components/DesignSystem";
 import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
+import RotatingWords from "../components/RotatingWords";
 import type { EventLandingData } from "./eventData";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -33,7 +34,7 @@ export default function EventLandingPage({ event }: { event: EventLandingData })
   return <div className="event-landing">
     <SiteHeader variant="landing" ctaHref="#reserve" ctaLabel={event.buttonLabel} />
     <main>
-      <section className="event-hero" aria-labelledby="event-title"><div className="event-hero-grid" aria-hidden="true" /><Container className="event-hero-content"><Badge>{event.kicker}</Badge><PageTitle id="event-title">{event.title}</PageTitle>{event.supportingLine && <p className="event-supporting-line">{event.supportingLine}</p>}<p className="event-hero-description">{event.subtitle}</p><ul className="event-info-list">{event.bulletPoints.map((point) => <li key={point}><CheckCircle2 size={18} />{point}</li>)}</ul><Button href="#reserve" size="lg">{event.buttonLabel} <ArrowRight size={19} /></Button><p className="event-scarcity"><span aria-hidden="true">●</span>{event.scarcity}</p><p className="event-learner-proof">{event.learnerCount}</p></Container></section>
+      <section className="event-hero" aria-labelledby="event-title"><div className="event-hero-grid" aria-hidden="true" /><Container className="event-hero-content"><Badge>{event.kicker}</Badge><PageTitle id="event-title">{event.title}</PageTitle>{event.supportingLine && <p className="event-supporting-line">{event.supportingLine}</p>}<p className="event-animated-line">{event.title.startsWith("Learn AI") ? <>Learn how AI can help you <RotatingWords words={["create faster", "market smarter", "work smarter"]} /></> : <>Learn how to speak with <RotatingWords words={["confidence", "clarity", "fluency"]} /></>}</p><p className="event-hero-description">{event.subtitle}</p><ul className="event-info-list">{event.bulletPoints.map((point) => <li key={point}><CheckCircle2 size={18} />{point}</li>)}</ul><Button href="#reserve" size="lg">{event.buttonLabel} <ArrowRight size={19} /></Button><p className="event-scarcity"><span aria-hidden="true">●</span>{event.scarcity}</p><p className="event-learner-proof">{event.learnerCount}</p></Container></section>
 
       <section className="event-highlights"><Container>{event.highlights.map((item) => <article key={item.title}><span><TopicIcon name={item.icon} /></span><div><h2>{item.title}</h2><p>{item.description}</p></div></article>)}</Container></section>
 

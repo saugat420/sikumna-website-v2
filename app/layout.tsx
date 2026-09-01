@@ -33,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var saved=localStorage.getItem('sikumna-theme');var theme=saved||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',theme==='dark');document.documentElement.style.colorScheme=theme;}catch(e){}})();` }} /></head>
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }} suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var saved=localStorage.getItem('sikumna-theme');var theme=saved==='light'?'light':'dark';var root=document.documentElement;root.classList.toggle('dark',theme==='dark');root.style.colorScheme=theme;root.dataset.theme=theme;}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}})();` }} /></head>
       <body className={`${manrope.variable} antialiased`}>
         {children}
       </body>
