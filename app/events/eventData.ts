@@ -19,7 +19,7 @@ export type EventLandingData = {
   sessionSteps: { title: string; description: string }[];
   audiences: { icon: string; label: string }[];
   audienceNote: string;
-  instructor: { name: string; image: string; role: string; bio: string; bullets: string[] };
+  instructor: { trainerId?: string; name: string; image: string; role: string; bio: string; bullets: string[] };
   reviewSummary: string;
   testimonials: { quote: string; name: string; role: string }[];
   reserveTitle: string;
@@ -65,7 +65,7 @@ export const aiMarketingEvent: EventLandingData = {
   ],
   audienceNote: "No marketing experience needed. No coding knowledge needed.",
   instructor: {
-    name: "Saugat Basnet", role: "Digital Marketing Expert & Educator", image: "/generated/mentors/saurav-shrestha.png",
+    trainerId: "saugat-basnet", name: "Saugat Basnet", role: "Digital Marketing Expert & Educator", image: "/generated/mentors/saurav-shrestha.png",
     bio: "Saugat helps learners turn digital marketing concepts into practical work they can use for their careers and businesses. This session is focused on clear, beginner-friendly next steps—not theory for theory’s sake.",
     bullets: ["Trained 14,000+ students", "9+ years of real-world experience", "Helped 1,000+ businesses grow online", "Founder of Sikumna Nepal"],
   },

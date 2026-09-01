@@ -1,6 +1,6 @@
 export type Masterclass = {
   slug: string; title: string; trainerId: string; category: string; thumbnail: string;
-  youtubeId?: string; duration: string; description: string; learningOutcomes: string[]; featured?: boolean;
+  youtubeId?: string; duration: string; description: string; learningOutcomes: string[]; featured?: boolean; publishedAt?: string;
 };
 
 export const masterclasses: Masterclass[] = [

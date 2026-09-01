@@ -14,6 +14,15 @@ async function render(path = "/") {
   );
 }
 
+const routeMatrix = [
+  "/", "/programs", "/programs/ai-marketing-launchpad", "/programs/english-fluency-launchpad",
+  "/free-masterclasses", "/free-masterclasses/freelancing-101", "/free-masterclasses/seo-masterclass",
+  "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/personal-branding-masterclass",
+  "/free-masterclasses/social-media-marketing", "/experts", "/experts/saugat-basnet", "/experts/anita-karki",
+  "/experts/prakriti-tamang", "/experts/rajan-adhikari", "/stories", "/about", "/sign-in", "/register",
+  "/account", "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
+];
+
 test("server-renders the complete Sikumna homepage", async () => {
   const response = await render();
   assert.equal(response.status, 200);
@@ -74,6 +83,38 @@ test("renders the structured learning, program, and expert journeys", async () =
   assert.match(html[7], /Welcome Back/);
 });
 
+test("every route in the complete route matrix renders", async () => {
+  const responses = await Promise.all(routeMatrix.map((path) => render(path)));
+  responses.forEach((response, index) => assert.equal(response.status, 200, `${routeMatrix[index]} should render`));
+  const missing = await render("/programs/not-a-real-program");
+  assert.equal(missing.status, 404);
+  assert.match(await missing.text(), /We couldn’t find this page/);
+});
+
+test("every rendered internal link resolves to a real route or section", async () => {
+  const pages = await Promise.all(routeMatrix.map(async (path) => ({ path, html: await (await render(path)).text() })));
+  const hrefs = new Set();
+  for (const { html } of pages) {
+    for (const match of html.matchAll(/href="([^"]+)"/g)) if (match[1].startsWith("/") && !match[1].startsWith("/_next/")) hrefs.add(match[1]);
+  }
+  for (const href of hrefs) {
+    const url = new URL(href, "http://localhost");
+    if (/\.(?:css|ico|jpe?g|png|svg|webp|woff2?)$/i.test(url.pathname)) continue;
+    const response = await render(url.pathname);
+    assert.ok(response.status < 400, `${href} should resolve`);
+  }
+  const home = pages.find((page) => page.path === "/")?.html ?? "";
+  const aiEvent = pages.find((page) => page.path === "/events/ai-marketing-masterclass")?.html ?? "";
+  assert.match(home, /id="events"/);
+  assert.match(aiEvent, /id="reserve"/);
+});
+
+test("masterclass cards open their detail pages before authentication", async () => {
+  const source = await readFile(new URL("../app/components/MasterclassLink.tsx", import.meta.url), "utf8");
+  assert.match(source, /href=\{`\/free-masterclasses\/\$\{slug\}`\}/);
+  assert.doesNotMatch(source, /preventDefault|mockAuthProvider|router\.push/);
+});
+
 test("keeps the shared design system, assets, and responsive implementation in place", async () => {
   const [page, home, layout, css, packageJson, designSystem, designSystemDocs, architecture, eventPage] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
@@ -90,7 +131,7 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.match(page, /<HomeClient \/>/);
   assert.match(home, /const events/);
   assert.match(home, /const testimonials/);
-  assert.match(home, /ReviewerIdentity/);
+  assert.doesNotMatch(home, /ReviewerIdentity/);
   assert.match(home, /from "\.\.\/data\/programs"/);
   assert.match(layout, /className="dark"/);
   assert.doesNotMatch(layout, /prefers-color-scheme/);
@@ -104,7 +145,7 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.match(architecture, /Development authentication/);
   assert.doesNotMatch(eventPage, /event-hero-art/);
   assert.doesNotMatch(eventPage, /RotatingWords|event-animated-line/);
-  assert.match(css, /reviewer-identity/);
+  assert.doesNotMatch(eventPage, /ReviewerIdentity/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
   await Promise.all([
