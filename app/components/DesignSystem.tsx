@@ -1,5 +1,4 @@
 import Image, { type ImageProps } from "next/image";
-import Link from "next/link";
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 
 function classes(...values: Array<string | false | null | undefined>) {
@@ -46,9 +45,7 @@ type ButtonProps = {
 
 export function Button({ children, href, variant = "primary", size = "md", className, ariaLabel, type = "button", onClick, disabled }: ButtonProps) {
   const buttonClass = classes("ds-button", `ds-button-${variant}`, `ds-button-${size}`, className);
-  if (href) return href.startsWith("/") || href.startsWith("#")
-    ? <Link className={buttonClass} href={href} aria-label={ariaLabel} onClick={onClick}>{children}</Link>
-    : <a className={buttonClass} href={href} aria-label={ariaLabel} onClick={onClick}>{children}</a>;
+  if (href) return <a className={buttonClass} href={href} aria-label={ariaLabel} onClick={onClick}>{children}</a>;
   return <button className={buttonClass} type={type} onClick={onClick} disabled={disabled} aria-label={ariaLabel}>{children}</button>;
 }
 

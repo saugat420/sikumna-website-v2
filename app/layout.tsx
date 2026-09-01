@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" style={{ colorScheme: "dark" }} suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var saved=localStorage.getItem('sikumna-theme');var theme=saved==='light'?'light':'dark';var root=document.documentElement;root.classList.toggle('dark',theme==='dark');root.style.colorScheme=theme;root.dataset.theme=theme;}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}})();` }} /></head>
+      <head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var saved=localStorage.getItem('sikumna-theme-v2');var theme=saved==='light'?'light':'dark';var root=document.documentElement;root.classList.toggle('dark',theme==='dark');root.style.colorScheme=theme;root.dataset.theme=theme;}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';document.documentElement.dataset.theme='dark';}})();` }} /></head>
       <body className={`${manrope.variable} antialiased`}>
         {children}
       </body>

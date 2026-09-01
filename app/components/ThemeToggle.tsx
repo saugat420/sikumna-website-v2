@@ -9,7 +9,7 @@ function applyTheme(theme: Theme) {
   document.documentElement.classList.toggle("dark", theme === "dark");
   document.documentElement.style.colorScheme = theme;
   document.documentElement.dataset.theme = theme;
-  localStorage.setItem("sikumna-theme", theme);
+  localStorage.setItem("sikumna-theme-v2", theme);
   window.dispatchEvent(new CustomEvent("sikumna-theme-change", { detail: theme }));
 }
 

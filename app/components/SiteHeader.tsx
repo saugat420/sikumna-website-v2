@@ -7,7 +7,7 @@ import { Button, Container } from "./DesignSystem";
 import ThemeToggle from "./ThemeToggle";
 import AccountMenu from "./AccountMenu";
 
-export default function SiteHeader({ variant = "default", ctaHref = "/#events", ctaLabel = "Join a Live Masterclass" }: { variant?: "default" | "landing"; ctaHref?: string; ctaLabel?: string }) {
+export default function SiteHeader({ variant = "default", ctaHref = "/events/ai-marketing-masterclass", ctaLabel = "Join a Live Masterclass" }: { variant?: "default" | "landing"; ctaHref?: string; ctaLabel?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const isLanding = variant === "landing";
   const links = [
