@@ -3,7 +3,7 @@
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "../DesignSystem";
 import RotatingWords from "../RotatingWords";
-import Link from "next/link";
+import Link from "../SafeLink";
 
 export default function HomeHero() {
   return <section className="home-hero" aria-labelledby="hero-title">

@@ -111,8 +111,23 @@ test("every rendered internal link resolves to a real route or section", async (
 
 test("masterclass cards open their detail pages before authentication", async () => {
   const source = await readFile(new URL("../app/components/MasterclassLink.tsx", import.meta.url), "utf8");
+  assert.match(source, /SafeLink/);
   assert.match(source, /href=\{`\/free-masterclasses\/\$\{slug\}`\}/);
   assert.doesNotMatch(source, /preventDefault|mockAuthProvider|router\.push/);
+});
+
+test("uses production-safe native navigation instead of the broken hosted link runtime", async () => {
+  const [safeLink, header, footer, auth] = await Promise.all([
+    readFile(new URL("../app/components/SafeLink.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/SiteFooter.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/AuthForm.tsx", import.meta.url), "utf8"),
+  ]);
+  assert.match(safeLink, /return <a href=\{href\}/);
+  assert.match(header, /from "\.\/SafeLink"/);
+  assert.match(footer, /from "\.\/SafeLink"/);
+  assert.doesNotMatch(`${header}\n${footer}\n${auth}`, /next\/link|useRouter|router\.push/);
+  assert.match(auth, /window\.location\.assign\(next\)/);
 });
 
 test("keeps the shared design system, assets, and responsive implementation in place", async () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./SafeLink";
 import { LockKeyhole, MessageCircle, Play, Send, Trash2 } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
 import type { Masterclass } from "../../data/masterclasses";

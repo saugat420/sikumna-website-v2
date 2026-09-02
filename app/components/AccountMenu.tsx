@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import Link from "./SafeLink";
 import { UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { authChangeEvent, mockAuthProvider } from "../../lib/auth/mock-auth-provider";

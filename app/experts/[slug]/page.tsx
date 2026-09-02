@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "../../components/SafeLink";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { experts, getExpert } from "../../../data/experts";

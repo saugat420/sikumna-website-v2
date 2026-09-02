@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "./components/SafeLink";
 import { ArrowRight, BarChart3, CheckCircle2, Compass, MessageCircleMore, Play, Sparkles, UsersRound, Video } from "lucide-react";
 import { programs } from "../data/programs";
 import { masterclasses } from "../data/masterclasses";

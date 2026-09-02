@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "../components/SafeLink";
 import { mockAuthProvider } from "../../lib/auth/mock-auth-provider";
 import type { AuthUser } from "../../lib/auth/types";
 

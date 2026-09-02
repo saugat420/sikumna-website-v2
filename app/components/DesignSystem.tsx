@@ -1,5 +1,5 @@
 import Image, { type ImageProps } from "next/image";
-import Link from "next/link";
+import Link from "./SafeLink";
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 
 function classes(...values: Array<string | false | null | undefined>) {

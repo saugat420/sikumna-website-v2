@@ -1,6 +1,6 @@
 "use client";
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
+import Link from "./SafeLink";
 import { useState } from "react";
 import BrandLogo from "./BrandLogo";
 import { Button, Container } from "./DesignSystem";

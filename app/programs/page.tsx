@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "../components/SafeLink";
 import { ArrowRight, Clock3 } from "lucide-react";
 import { experts } from "../../data/experts";
 import { programs } from "../../data/programs";
