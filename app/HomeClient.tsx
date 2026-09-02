@@ -10,8 +10,8 @@ import SiteFooter from "./components/SiteFooter";
 import SiteHeader from "./components/SiteHeader";
 
 const events = [
-  { title: "AI Marketing Masterclass", description: "Understand how AI can support practical marketing work and a freelance career—even as a beginner.", date: "Sat, 24 May 2025", time: "7:00 PM NPT", image: "/generated/icons/ai-masterclass.png", href: "/events/ai-marketing-masterclass" },
-  { title: "English Fluency Workshop", description: "Learn approachable speaking techniques for real conversations, work and everyday confidence.", date: "Sun, 25 May 2025", time: "7:00 PM NPT", image: "/generated/icons/english-workshop.png", href: "/events/english-fluency-workshop" },
+  { title: "AI Marketing Masterclass", description: "Understand how AI can support practical marketing work and a freelance career—even as a beginner.", date: "Sat, 24 May 2025", time: "7:00 PM NPT", image: "/generated/icons/ai-masterclass.webp", href: "/events/ai-marketing-masterclass" },
+  { title: "English Fluency Workshop", description: "Learn approachable speaking techniques for real conversations, work and everyday confidence.", date: "Sun, 25 May 2025", time: "7:00 PM NPT", image: "/generated/icons/english-workshop.webp", href: "/events/english-fluency-workshop" },
 ];
 
 const testimonials = [

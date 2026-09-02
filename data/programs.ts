@@ -9,7 +9,7 @@ export const programs: Program[] = [
   {
     slug: "ai-marketing-launchpad", title: "AI Marketing Launchpad", trainerId: "saugat-basnet", category: "Marketing + AI",
     positioning: "Build useful AI marketing skills through guided practice, feedback and real-world application.",
-    description: "Build practical AI marketing skills for research, campaigns and real client opportunities.", image: "/generated/icons/ai-marketing-launchpad.png",
+    description: "Build practical AI marketing skills for research, campaigns and real client opportunities.", image: "/generated/icons/ai-marketing-launchpad.webp",
     format: "Live Zoom mentorship", duration: "Structured cohort",
     about: "AI Marketing Launchpad is a guided learning program for people who want to use AI thoughtfully in practical marketing work. The program connects foundations, demonstrations and repeated practice so learners can build confidence instead of collecting disconnected tools.",
     audience: ["Marketing beginners", "Aspiring freelancers", "Students and job seekers", "Small-business owners", "Working professionals building a modern skill"],
@@ -26,7 +26,7 @@ export const programs: Program[] = [
   {
     slug: "english-fluency-launchpad", title: "60 Day English Fluency Launchpad", trainerId: "anita-karki", category: "Communication",
     positioning: "Build speaking confidence through consistent live practice and supportive feedback.",
-    description: "Build the confidence and habits to communicate clearly in daily life and work.", image: "/generated/icons/english-fluency.png",
+    description: "Build the confidence and habits to communicate clearly in daily life and work.", image: "/generated/icons/english-fluency.webp",
     format: "Live speaking practice", duration: "60 days",
     about: "The 60 Day English Fluency Launchpad is a practice-led program for learners who understand English but hesitate when speaking. It focuses on useful situations, repeatable habits and encouraging feedback that makes steady improvement possible.",
     audience: ["Students", "Job seekers", "Working professionals", "Entrepreneurs", "Anyone who understands English but hesitates to speak"],

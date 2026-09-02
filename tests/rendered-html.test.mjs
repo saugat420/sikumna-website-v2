@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
 async function render(path = "/") {
@@ -130,6 +130,31 @@ test("uses production-safe native navigation instead of the broken hosted link r
   assert.match(auth, /window\.location\.assign\(next\)/);
 });
 
+test("keeps page imagery within the performance budget", async () => {
+  const paths = [
+    "../public/generated/events/ai-marketing-masterclass-hero.webp",
+    "../public/generated/events/english-fluency-workshop-hero.webp",
+    "../public/generated/mentors/anita-karki.webp",
+    "../public/generated/mentors/prakriti-tamang.webp",
+    "../public/generated/mentors/rajan-adhikari.webp",
+    "../public/generated/mentors/saurav-shrestha.webp",
+    "../public/generated/icons/ai-marketing-launchpad.webp",
+    "../public/generated/icons/english-fluency.webp",
+    "../public/generated/icons/freelancing.webp",
+    "../public/generated/icons/seo.webp",
+    "../public/generated/icons/ecommerce.webp",
+    "../public/generated/icons/personal-branding.webp",
+    "../public/generated/icons/social-media.webp",
+    "../public/generated/icons/ai-masterclass.webp",
+    "../public/generated/icons/english-workshop.webp",
+  ];
+  const sizes = await Promise.all(paths.map((path) => stat(new URL(path, import.meta.url)).then((file) => file.size)));
+  assert.ok(sizes.every((size) => size < 100_000), "each page image should remain under 100 KB");
+  assert.ok(sizes.reduce((sum, size) => sum + size, 0) < 700_000, "all primary page imagery should remain under 700 KB");
+  const brandSource = await readFile(new URL("../app/components/BrandLogo.tsx", import.meta.url), "utf8");
+  assert.doesNotMatch(brandSource, /next\/image|brand-logo-light|brand-logo-dark/);
+});
+
 test("keeps the shared design system, assets, and responsive implementation in place", async () => {
   const [page, home, layout, css, packageJson, designSystem, designSystemDocs, architecture, eventPage] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
@@ -150,7 +175,9 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.match(home, /from "\.\.\/data\/programs"/);
   assert.match(layout, /className="dark"/);
   assert.doesNotMatch(layout, /prefers-color-scheme/);
+  assert.doesNotMatch(layout, /next\/headers|generateMetadata/);
   assert.match(layout, /saved==='light'\?'light':'dark'/);
+  assert.match(layout, /type="speculationrules"/);
   assert.match(css, /@media\(max-width:620px\)/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /html\.dark/);
@@ -164,14 +191,14 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
   await Promise.all([
-    access(new URL("../public/sikumna-logo.png", import.meta.url)),
-    access(new URL("../public/images/brand/sikumna-logo-dark.png", import.meta.url)),
+    access(new URL("../public/sikumna-logo-optimized.png", import.meta.url)),
+    access(new URL("../public/images/brand/sikumna-logo-dark-optimized.png", import.meta.url)),
     access(new URL("../public/generated/sikumna-hero-v3.png", import.meta.url)),
-    access(new URL("../public/generated/icons/ai-marketing-launchpad.png", import.meta.url)),
+    access(new URL("../public/generated/icons/ai-marketing-launchpad.webp", import.meta.url)),
     access(new URL("../public/generated/icons/learn-live.png", import.meta.url)),
-    access(new URL("../public/generated/mentors/prakriti-tamang.png", import.meta.url)),
-    access(new URL("../public/generated/events/ai-marketing-masterclass-hero.png", import.meta.url)),
-    access(new URL("../public/generated/events/english-fluency-workshop-hero.png", import.meta.url)),
+    access(new URL("../public/generated/mentors/prakriti-tamang.webp", import.meta.url)),
+    access(new URL("../public/generated/events/ai-marketing-masterclass-hero.webp", import.meta.url)),
+    access(new URL("../public/generated/events/english-fluency-workshop-hero.webp", import.meta.url)),
     access(new URL("../public/og.png", import.meta.url)),
   ]);
 });

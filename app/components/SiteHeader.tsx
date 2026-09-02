@@ -20,7 +20,7 @@ export default function SiteHeader({ variant = "default", ctaHref = "/events/ai-
 
   return <header className="site-header">
     <Container className="site-nav">
-      <Link className="brand" href="/" aria-label="Sikumna Nepal home"><BrandLogo priority /></Link>
+      <Link className="brand" href="/" aria-label="Sikumna Nepal home"><BrandLogo /></Link>
       {isLanding ? <nav className="landing-nav" aria-label="Landing page navigation"><Link href="/">Home</Link></nav> : <nav className="desktop-nav" aria-label="Primary navigation">{links.map(([label, href]) => <Link href={href} key={label}>{label}</Link>)}</nav>}
       <div className="nav-actions"><Button href={ctaHref} size="sm" className="nav-cta">{ctaLabel}</Button><ThemeToggle />{!isLanding && <AccountMenu />}<button className="menu-button" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={24} /> : <Menu size={24} />}</button></div>
     </Container>
