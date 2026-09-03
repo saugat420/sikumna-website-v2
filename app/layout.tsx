@@ -16,7 +16,11 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/" },
-  icons: { icon: "/sikumna-logo-optimized.png", shortcut: "/sikumna-logo-optimized.png" },
+  icons: {
+    icon: [{ url: "/sikumna-favicon-v2.png", type: "image/png", sizes: "256x256" }],
+    shortcut: "/sikumna-favicon-v2.png",
+    apple: [{ url: "/sikumna-apple-touch-icon-v2.png", type: "image/png", sizes: "180x180" }],
+  },
   openGraph: { title, description, type: "website", images: [{ url: `${siteUrl}/og.png`, width: 1200, height: 630, alt: "Sikumna Nepal — Learn skills that matter in real life." }] },
   twitter: { card: "summary_large_image", title, description, images: [`${siteUrl}/og.png`] },
 };
