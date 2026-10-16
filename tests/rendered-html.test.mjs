@@ -132,6 +132,41 @@ test("masterclass cards open their detail pages before authentication", async ()
   assert.doesNotMatch(source, /preventDefault|mockAuthProvider|router\.push/);
 });
 
+test("uses the supplied artwork and simplified learning detail pages", async () => {
+  const [home, programsPage, programDetail, masterclassDetail, header] = await Promise.all([
+    render("/"), render("/programs"), render("/programs/digital-marketing"),
+    render("/free-masterclasses/social-media-marketing"),
+    readFile(new URL("../app/components/LiveMasterclassMenu.tsx", import.meta.url), "utf8"),
+  ]);
+  const [homeHtml, programsHtml, programHtml, masterclassHtml] = await Promise.all([home, programsPage, programDetail, masterclassDetail].map((response) => response.text()));
+  assert.match(programsHtml, /digital-marketing\.webp/);
+  assert.match(homeHtml, /freelancing\.webp/);
+  assert.match(homeHtml, /https:\/\/ai\.sikumna\.com\//);
+  assert.match(homeHtml, /https:\/\/sen\.sikumna\.com\//);
+  assert.match(homeHtml, /ai-marketing-masterclass\.webp/);
+  assert.match(homeHtml, /english-fluency-workshop\.webp/);
+  assert.doesNotMatch(programHtml, /Your Trainer|About the trainer/);
+  assert.doesNotMatch(masterclassHtml, /About This Masterclass|What You’ll Learn|About the trainer/);
+  assert.match(header, /AI Marketing Masterclass/);
+  assert.match(header, /English Fluency Workshop/);
+});
+
+test("keeps all supplied content artwork optimized", async () => {
+  const paths = [
+    "../public/content/programs/digital-marketing.webp", "../public/content/programs/ai-powered-digital-marketing.webp",
+    "../public/content/programs/personal-branding.webp", "../public/content/programs/communication.webp",
+    "../public/content/programs/personal-finance.webp", "../public/content/programs/english-fluency.webp",
+    "../public/content/masterclasses/freelancing.webp", "../public/content/masterclasses/seo.webp",
+    "../public/content/masterclasses/ecommerce.webp", "../public/content/masterclasses/personal-branding.webp",
+    "../public/content/masterclasses/social-media-marketing.webp",
+    "../public/content/live-events/ai-marketing-masterclass.webp",
+    "../public/content/live-events/english-fluency-workshop.webp",
+  ];
+  const sizes = await Promise.all(paths.map((path) => stat(new URL(path, import.meta.url)).then((file) => file.size)));
+  assert.ok(sizes.every((size) => size < 70_000), "each supplied artwork asset should remain under 70 KB");
+  assert.ok(sizes.reduce((sum, size) => sum + size, 0) < 400_000, "all supplied artwork should remain under 400 KB");
+});
+
 test("uses production-safe native navigation instead of the broken hosted link runtime", async () => {
   const [safeLink, header, footer, auth] = await Promise.all([
     readFile(new URL("../app/components/SafeLink.tsx", import.meta.url), "utf8"),

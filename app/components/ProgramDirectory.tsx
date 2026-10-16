@@ -1,18 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Languages, Megaphone, MessagesSquare, Sparkles, UserRound, WalletCards } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { programs, type Program, type ProgramCategory } from "../../data/programs";
 import Link from "./SafeLink";
 
 const filters: ("All programs" | ProgramCategory)[] = ["All programs", "Marketing & AI", "Communication", "Personal growth"];
-const icons = { megaphone: Megaphone, sparkles: Sparkles, user: UserRound, messages: MessagesSquare, wallet: WalletCards, languages: Languages };
-
 function ProgramCard({ program }: { program: Program }) {
-  const Icon = icons[program.icon];
   return <article className="cohort-card">
-    <div className={`cohort-card-visual cohort-tone-${program.tone}`}>
-      <span>Live cohort</span><h3>{program.tagline}</h3><Icon aria-hidden="true" />
+    <div className="cohort-card-visual">
+      <Image src={program.image} alt={`${program.title} illustration`} fill sizes="(max-width: 620px) 100vw, 50vw" />
+      <span>Live cohort</span>
     </div>
     <div className="cohort-card-body"><small>{program.category}</small><h3>{program.title}</h3><p>{program.description}</p>
       <div><span>Learn live, together</span><Link href={`/programs/${program.slug}`}>Explore program <ArrowUpRight size={18} /></Link></div>
