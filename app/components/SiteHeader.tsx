@@ -13,7 +13,6 @@ export default function SiteHeader({ variant = "default", ctaHref = "/events/ai-
   const links = [
     ["Programs", "/programs"],
     ["Free Learning", "/free-masterclasses"],
-    ["Experts", "/experts"],
     ["Stories", "/stories"],
     ["About", "/about"],
   ];

@@ -15,11 +15,12 @@ async function render(path = "/") {
 }
 
 const routeMatrix = [
-  "/", "/programs", "/programs/ai-marketing-launchpad", "/programs/english-fluency-launchpad",
+  "/", "/programs", "/programs/digital-marketing", "/programs/ai-powered-digital-marketing",
+  "/programs/personal-branding", "/programs/communication", "/programs/personal-finance", "/programs/english-fluency",
   "/free-masterclasses", "/free-masterclasses/freelancing-101", "/free-masterclasses/seo-masterclass",
   "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/personal-branding-masterclass",
-  "/free-masterclasses/social-media-marketing", "/experts", "/experts/saugat-basnet", "/experts/anita-karki",
-  "/experts/prakriti-tamang", "/experts/rajan-adhikari", "/stories", "/about", "/sign-in", "/register",
+  "/free-masterclasses/social-media-marketing", "/stories", "/about", "/sign-in", "/register",
+  "/help-center", "/faq", "/refund-policy", "/terms", "/privacy-policy",
   "/account", "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
 ];
 
@@ -31,9 +32,12 @@ test("server-renders the complete Sikumna homepage", async () => {
   const html = await response.text();
   assert.match(html, /Sikumna Nepal \| Learn Skills That Matter/);
   assert.match(html, /Learn skills that/);
-  assert.match(html, /Programs built around real outcomes/);
+  assert.match(html, /A skill for your next chapter/);
   assert.match(html, /Start learning for free/);
-  assert.match(html, /Learn from people who actually do the work/);
+  assert.doesNotMatch(html, /Learn from people who actually do the work/);
+  assert.match(html, /Om Sarbottam Pudasaini/);
+  assert.doesNotMatch(html, /how-number/);
+  assert.doesNotMatch(html, /href="\/experts|Learn from people who actually do the work/);
   assert.match(html, /From curiosity to real-world skill/);
   assert.match(html, /What do you want to learn next/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Your site is taking shape/i);
@@ -65,22 +69,19 @@ test("renders both event registration landing pages", async () => {
   assert.doesNotMatch(englishHtml, /\/og\.png/);
 });
 
-test("renders the structured learning, program, and expert journeys", async () => {
+test("renders the structured learning, program, and account journeys", async () => {
   const responses = await Promise.all([
     render("/free-masterclasses"), render("/free-masterclasses/freelancing-101"),
-    render("/programs"), render("/programs/ai-marketing-launchpad"),
-    render("/experts"), render("/experts/saugat-basnet"), render("/register"), render("/sign-in"),
+    render("/programs"), render("/programs/ai-powered-digital-marketing"), render("/register"), render("/sign-in"),
   ]);
   responses.forEach((response) => assert.equal(response.status, 200));
   const html = await Promise.all(responses.map((response) => response.text()));
   assert.match(html[0], /Learn Practical Skills for Free/);
   assert.match(html[1], /Create a free account to watch/);
-  assert.match(html[2], /Programs Built for Real-World Growth/);
-  assert.match(html[3], /Join the Free Live Session/);
-  assert.match(html[4], /Learn From Experienced Practitioners/);
-  assert.match(html[5], /Saugat Basnet/);
-  assert.match(html[6], /Create Your Sikumna Account/);
-  assert.match(html[7], /Welcome Back/);
+  assert.match(html[2], /A skill for your next chapter/);
+  assert.match(html[3], /Ask about this cohort/);
+  assert.match(html[4], /Create Your Sikumna Account/);
+  assert.match(html[5], /Welcome Back/);
 });
 
 test("every route in the complete route matrix renders", async () => {
@@ -89,6 +90,21 @@ test("every route in the complete route matrix renders", async () => {
   const missing = await render("/programs/not-a-real-program");
   assert.equal(missing.status, 404);
   assert.match(await missing.text(), /We couldn’t find this page/);
+  const removedExperts = await render("/experts");
+  assert.equal(removedExperts.status, 404);
+});
+
+test("renders the requested support content and removes unfinished footer items", async () => {
+  const [privacy, refund, help, faq, terms, home] = await Promise.all([
+    render("/privacy-policy"), render("/refund-policy"), render("/help-center"),
+    render("/faq"), render("/terms"), render("/"),
+  ]).then((responses) => Promise.all(responses.map((response) => response.text())));
+  assert.match(privacy, /Last updated: October 16, 2026/);
+  assert.match(refund, /7-day refund policy/);
+  assert.match(help, /support@sikumna\.com/);
+  assert.match(faq, /What is Sikumna Nepal/);
+  assert.match(terms, /Learning outcomes/);
+  assert.doesNotMatch(home, /Coming soon|Careers/);
 });
 
 test("every rendered internal link resolves to a real route or section", async () => {
@@ -170,9 +186,9 @@ test("keeps the shared design system, assets, and responsive implementation in p
 
   assert.match(page, /<HomeClient \/>/);
   assert.match(home, /const events/);
-  assert.match(home, /const testimonials/);
+  assert.match(home, /learnerReviews/);
   assert.doesNotMatch(home, /ReviewerIdentity/);
-  assert.match(home, /from "\.\.\/data\/programs"/);
+  assert.match(home, /ProgramDirectory/);
   assert.match(layout, /className="dark"/);
   assert.doesNotMatch(layout, /prefers-color-scheme/);
   assert.doesNotMatch(layout, /next\/headers|generateMetadata/);

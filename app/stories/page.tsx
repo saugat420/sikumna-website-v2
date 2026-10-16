@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { MessageCircleMore } from "lucide-react";
+import Image from "next/image";
+import { Star } from "lucide-react";
+import { learnerReviews } from "../../data/reviews";
 import { Container } from "../components/DesignSystem";
 import InnerPageHero from "../components/InnerPageHero";
 import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
-export const metadata: Metadata = { title: "Learner Stories | Sikumna Nepal", description: "Stories from learners applying practical Sikumna skills in real life.", alternates: { canonical: "/stories" } };
-const stories=[{name:"Rajan Shrestha",role:"Freelancer",quote:"The session felt practical from the first minute. I left knowing what to work on next."},{name:"Prakriti Tamang",role:"Student",quote:"The teaching style was simple, supportive and easy to apply in real life."},{name:"Sushil Adhikari",role:"Working professional",quote:"I liked that there was space to ask questions instead of only watching a recording."}];
-export default function StoriesPage(){return <><SiteHeader/><main><InnerPageHero eyebrow="Learner Outcomes" title="Stories of Learning and Progress" description="Hear from learners using practical skills to move forward with more clarity and confidence."/><Container><div className="story-grid">{stories.map((story)=><blockquote key={story.name}><MessageCircleMore size={26}/><p>“{story.quote}”</p><footer><span>{story.name.slice(0,1)}</span><div><strong>{story.name}</strong><small>{story.role}</small></div></footer></blockquote>)}</div></Container></main><SiteFooter/></>}
+
+export const metadata: Metadata = { title: "Learner Stories | Sikumna Nepal", description: "Verified Google reviews from learners applying practical Sikumna skills.", alternates: { canonical: "/stories" } };
+
+export default function StoriesPage(){return <><SiteHeader/><main><InnerPageHero eyebrow="Verified Google Reviews" title="Real Stories From Real Learners" description="Read what learners have shared publicly about their experience with Digital Saugat."/><Container><div className="review-grid stories-review-grid">{learnerReviews.map((review)=><article className="review-card" key={review.name}><div className="review-stars" aria-label="5 out of 5 stars">{Array.from({length:review.rating},(_,index)=><Star key={index} size={16} fill="currentColor"/>)}</div><blockquote>“{review.quote}”</blockquote><footer className="review-author"><Image src={review.image} width={44} height={44} alt={`${review.name}'s Google profile`}/><div><a href={review.profileUrl} target="_blank" rel="noreferrer"><strong>{review.name}</strong></a><small>Google review · {review.time}</small></div></footer></article>)}</div></Container></main><SiteFooter/></>}

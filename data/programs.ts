@@ -1,44 +1,67 @@
+export type ProgramCategory = "Marketing & AI" | "Communication" | "Personal growth";
 export type Program = {
-  slug: string; title: string; trainerId: string; category: string; description: string; image: string;
+  slug: string; title: string; trainerId?: string; category: ProgramCategory; description: string; image: string;
+  tagline: string; tone: "blue" | "violet" | "coral" | "amber" | "green" | "teal";
+  icon: "megaphone" | "sparkles" | "user" | "messages" | "wallet" | "languages";
   positioning: string; format: string; duration: string; about: string; audience: string[];
-  outcomes: string[]; modules: string[]; howItWorks: string[]; relatedEvent: string;
-  faq: { question: string; answer: string }[];
+  outcomes: string[]; modules: string[]; howItWorks: string[]; faq: { question: string; answer: string }[];
 };
+
+const how = ["Live, guided sessions", "Practical assignments", "Feedback and Q&A", "Peer learning and accountability"];
+const faq = [
+  { question: "Is this a live program?", answer: "Yes. This is a live cohort program built around guided sessions, practice and interaction." },
+  { question: "When does the next cohort begin?", answer: "Cohort dates, duration and enrollment details are announced when registration opens. Contact Sikumna for the latest update." },
+  { question: "Can beginners join?", answer: "Yes. The program starts with clear foundations and builds toward practical application." },
+];
 
 export const programs: Program[] = [
   {
-    slug: "ai-marketing-launchpad", title: "AI Marketing Launchpad", trainerId: "saugat-basnet", category: "Marketing + AI",
-    positioning: "Build useful AI marketing skills through guided practice, feedback and real-world application.",
-    description: "Build practical AI marketing skills for research, campaigns and real client opportunities.", image: "/generated/icons/ai-marketing-launchpad.webp",
-    format: "Live Zoom mentorship", duration: "Structured cohort",
-    about: "AI Marketing Launchpad is a guided learning program for people who want to use AI thoughtfully in practical marketing work. The program connects foundations, demonstrations and repeated practice so learners can build confidence instead of collecting disconnected tools.",
-    audience: ["Marketing beginners", "Aspiring freelancers", "Students and job seekers", "Small-business owners", "Working professionals building a modern skill"],
-    outcomes: ["Work faster with responsible AI workflows", "Create a practical portfolio", "Turn learning into a career action plan"],
-    modules: ["AI marketing foundations", "Research and content workflows", "Campaign thinking", "Portfolio and opportunity plan"],
-    howItWorks: ["Live Zoom sessions", "Guided assignments", "Practical demonstrations", "Mentor feedback and Q&A", "Peer learning and accountability"],
-    relatedEvent: "/events/ai-marketing-masterclass",
-    faq: [
-      { question: "Do I need marketing or coding experience?", answer: "No. The program starts with practical foundations and does not require coding knowledge." },
-      { question: "Is the program live?", answer: "Yes. The learning experience is built around live Zoom mentorship, practice and Q&A." },
-      { question: "How do I learn more before joining?", answer: "Join the free AI Marketing Masterclass to experience the teaching approach and receive the next program details." },
-    ],
+    slug: "digital-marketing", title: "Digital Marketing", trainerId: "saugat-basnet", category: "Marketing & AI", tagline: "Build attention. Create demand.", tone: "blue", icon: "megaphone",
+    description: "Learn the foundations of modern digital marketing and turn ideas into practical campaigns.", image: "/generated/icons/social-media.webp",
+    positioning: "Learn how digital channels work together and build campaigns with a clear purpose.", format: "Live cohort program", duration: "Schedule announced before enrollment",
+    about: "Digital Marketing is a practical cohort for learners who want a clear understanding of strategy, content, social media, advertising and measurement. You will learn by building—not by memorising disconnected terms.",
+    audience: ["Marketing beginners", "Students and job seekers", "Aspiring freelancers", "Small-business owners"], outcomes: ["Plan a clear digital campaign", "Create useful content for the right audience", "Read core performance signals with confidence"],
+    modules: ["Digital marketing foundations", "Audience and positioning", "Content and social media", "Campaigns and measurement"], howItWorks: how, faq,
   },
   {
-    slug: "english-fluency-launchpad", title: "60 Day English Fluency Launchpad", trainerId: "anita-karki", category: "Communication",
-    positioning: "Build speaking confidence through consistent live practice and supportive feedback.",
-    description: "Build the confidence and habits to communicate clearly in daily life and work.", image: "/generated/icons/english-fluency.webp",
-    format: "Live speaking practice", duration: "60 days",
-    about: "The 60 Day English Fluency Launchpad is a practice-led program for learners who understand English but hesitate when speaking. It focuses on useful situations, repeatable habits and encouraging feedback that makes steady improvement possible.",
-    audience: ["Students", "Job seekers", "Working professionals", "Entrepreneurs", "Anyone who understands English but hesitates to speak"],
-    outcomes: ["Speak more naturally in everyday situations", "Build workplace communication confidence", "Practice consistently with supportive feedback"],
-    modules: ["Confidence foundations", "Everyday conversations", "Workplace English", "Fluency habits"],
-    howItWorks: ["Live Zoom sessions", "Guided speaking practice", "Daily fluency habits", "Mentor feedback and Q&A", "Supportive peer practice"],
-    relatedEvent: "/events/english-fluency-workshop",
-    faq: [
-      { question: "Do I need advanced English?", answer: "No. Basic understanding is enough; the program is designed for developing speakers." },
-      { question: "Will I get speaking practice?", answer: "Yes. Live practice and feedback are central parts of the program." },
-      { question: "How can I experience the teaching first?", answer: "Join the free English Fluency Workshop to learn the approach and receive the next program details." },
-    ],
+    slug: "ai-powered-digital-marketing", title: "AI Powered Digital Marketing", trainerId: "saugat-basnet", category: "Marketing & AI", tagline: "Think better. Market smarter.", tone: "violet", icon: "sparkles",
+    description: "Use AI responsibly to improve research, content, campaigns and everyday marketing workflows.", image: "/generated/icons/ai-marketing-launchpad.webp",
+    positioning: "Turn modern AI tools into practical marketing skills and real working systems.", format: "Live cohort program", duration: "Schedule announced before enrollment",
+    about: "AI Powered Digital Marketing connects marketing fundamentals with responsible AI workflows. The focus is not on collecting tools; it is on knowing where AI genuinely helps and how to produce better work with human judgement.",
+    audience: ["Digital marketers", "Aspiring freelancers", "Business owners", "Students building a modern skill"], outcomes: ["Build repeatable AI-assisted workflows", "Improve research and content quality", "Create a practical marketing portfolio"],
+    modules: ["AI and marketing foundations", "Research and insight workflows", "Content and campaign systems", "Portfolio and opportunity plan"], howItWorks: how, faq,
+  },
+  {
+    slug: "personal-branding", title: "Personal Branding", trainerId: "saugat-basnet", category: "Personal growth", tagline: "Make your name mean more.", tone: "coral", icon: "user",
+    description: "Learn to communicate what you do, what you believe and the value you bring.", image: "/generated/icons/personal-branding.webp",
+    positioning: "Build a credible personal brand that feels clear, useful and genuinely yours.", format: "Live cohort program", duration: "Schedule announced before enrollment",
+    about: "Personal Branding helps you clarify your strengths, message and online presence. Through guided exercises and feedback, you will shape a brand that supports your career, business or creative work without pretending to be someone else.",
+    audience: ["Students and job seekers", "Freelancers and creators", "Professionals", "Entrepreneurs"], outcomes: ["Define a clear personal positioning", "Communicate your value with confidence", "Create a consistent online presence"],
+    modules: ["Strengths and positioning", "Audience and message", "Content and credibility", "Personal brand action plan"], howItWorks: how, faq,
+  },
+  {
+    slug: "communication", title: "Communication", trainerId: "anita-karki", category: "Communication", tagline: "Say it clearly. Make it count.", tone: "amber", icon: "messages",
+    description: "Communicate ideas clearly, listen well and handle everyday conversations with confidence.", image: "/generated/icons/english-workshop.webp",
+    positioning: "Build practical communication habits for work, relationships and everyday life.", format: "Live cohort program", duration: "Schedule announced before enrollment",
+    about: "Communication is a practice-led cohort focused on clarity, listening, expression and confidence. Learners work through familiar situations and receive supportive feedback they can use immediately.",
+    audience: ["Students", "Job seekers", "Working professionals", "Anyone who wants to express ideas more clearly"], outcomes: ["Structure ideas before speaking", "Listen and respond with confidence", "Handle common workplace conversations"],
+    modules: ["Clear communication foundations", "Listening and response", "Workplace conversations", "Confidence through practice"], howItWorks: how, faq,
+  },
+  {
+    slug: "personal-finance", title: "Personal Finance", category: "Personal growth", tagline: "Know your money. Own your choices.", tone: "green", icon: "wallet",
+    description: "Understand everyday money habits and make more thoughtful financial decisions.", image: "/generated/icons/grow.png",
+    positioning: "Build calm, practical money habits for the life you are actually living.", format: "Live cohort program", duration: "Schedule announced before enrollment",
+    about: "Personal Finance makes everyday money concepts approachable. It helps learners understand spending, saving, planning and financial choices without hype or unrealistic promises.",
+    audience: ["Young adults", "First-time earners", "Families improving money habits", "Anyone who wants more clarity around personal money"], outcomes: ["Understand where your money goes", "Create a realistic saving plan", "Make financial choices with greater clarity"],
+    modules: ["Money habits and goals", "Spending and budgeting", "Saving and financial safety", "A personal money plan"], howItWorks: how, faq,
+  },
+  {
+    slug: "english-fluency", title: "English Fluency", trainerId: "anita-karki", category: "Communication", tagline: "Speak more. Hold back less.", tone: "teal", icon: "languages",
+    description: "Build speaking confidence through consistent live practice and supportive feedback.", image: "/generated/icons/english-fluency.webp",
+    positioning: "Build the confidence and habits to communicate clearly in daily life and work.", format: "Live cohort program", duration: "Schedule announced before enrollment",
+    about: "English Fluency is a practice-led program for learners who understand English but hesitate when speaking. It focuses on useful situations, repeatable habits and encouraging feedback that makes steady improvement possible.",
+    audience: ["Students", "Job seekers", "Working professionals", "Entrepreneurs", "People who understand English but hesitate to speak"], outcomes: ["Speak more naturally in everyday situations", "Build workplace communication confidence", "Practice consistently with supportive feedback"],
+    modules: ["Confidence foundations", "Everyday conversations", "Workplace English", "Fluency habits"], howItWorks: how, faq,
   },
 ];
 
