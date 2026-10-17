@@ -2,13 +2,13 @@ import assert from "node:assert/strict";
 import { access, readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
-async function render(path = "/") {
+async function render(path = "/", headers = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }),
+    new Request(`http://localhost${path}`, { headers: { accept: "text/html", ...headers } }),
     { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
     { waitUntil() {}, passThroughOnException() {} },
   );
@@ -77,11 +77,53 @@ test("renders the structured learning, program, and account journeys", async () 
   responses.forEach((response) => assert.equal(response.status, 200));
   const html = await Promise.all(responses.map((response) => response.text()));
   assert.match(html[0], /Learn Practical Skills for Free/);
+  assert.match(html[0], /Free Digital Marketing Course/);
+  assert.ok(html[0].indexOf("Free Digital Marketing Course") < html[0].indexOf("Freelancing 101"), "the free course should be listed before masterclasses");
   assert.match(html[1], /Create your free account to watch this masterclass/);
   assert.match(html[2], /A skill for your next chapter/);
   assert.match(html[3], /Ask about this cohort/);
   assert.match(html[4], /Create Your Sikumna Account/);
   assert.match(html[5], /Welcome Back/);
+});
+
+test("gates the complete digital marketing course behind learner login", async () => {
+  const demoLearner = Buffer.from(JSON.stringify({ id: "demo-test", name: "Demo Learner", email: "demo@example.com", emailVerified: true, learningInterest: "AI & Digital Marketing", marketingConsent: false })).toString("base64");
+  const [courseResponse, authenticatedCourseResponse, homeResponse, learningResponse, courseData, accordion] = await Promise.all([
+    render("/free-courses/digital-marketing"),
+    render("/free-courses/digital-marketing", { cookie: `sikumna-demo-user-v1=${demoLearner}` }),
+    render("/"), render("/free-masterclasses"),
+    readFile(new URL("../data/courses.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/CourseLessonAccordion.tsx", import.meta.url), "utf8"),
+  ]);
+  assert.ok([307, 308].includes(courseResponse.status));
+  assert.match(courseResponse.headers.get("location") ?? "", /\/sign-in\?next=%2Ffree-courses%2Fdigital-marketing/);
+  assert.equal(authenticatedCourseResponse.status, 200);
+  const authenticatedCourse = await authenticatedCourseResponse.text();
+  assert.match(authenticatedCourse, /Welcome to Digital Marketing/);
+  assert.match(authenticatedCourse, /Your Next Steps in Digital Marketing/);
+  assert.match(authenticatedCourse, /Demo Learner/);
+  const [home, learning] = await Promise.all([homeResponse.text(), learningResponse.text()]);
+  assert.match(home, /Must Watch/);
+  assert.match(learning, /Free complete course/);
+  assert.ok(home.indexOf("Free Digital Marketing Course") < home.indexOf("Freelancing 101"));
+  assert.ok(learning.indexOf("Free Digital Marketing Course") < learning.indexOf("Freelancing 101"));
+  assert.equal((courseData.match(/^ {2}".+",$/gm) ?? []).length, 30);
+  assert.match(accordion, /aria-expanded=\{isOpen\}/);
+  assert.match(accordion, /setOpenLesson\(isOpen \? "" : lesson\.id\)/);
+});
+
+test("provides clearly labeled browser-local demo authentication when Supabase is absent", async () => {
+  const [register, signIn, authForm, session] = await Promise.all([
+    render("/register"), render("/sign-in"),
+    readFile(new URL("../app/components/AuthForm.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../lib/auth/session.ts", import.meta.url), "utf8"),
+  ]);
+  const [registerHtml, signInHtml] = await Promise.all([register.text(), signIn.text()]);
+  assert.match(registerHtml, /Demo preview mode/);
+  assert.match(signInHtml, /Demo preview mode/);
+  assert.match(authForm, /sikumna-demo-accounts-v1/);
+  assert.match(authForm, /window\.location\.assign\(next\)/);
+  assert.match(session, /decodeDemoLearner/);
 });
 
 test("every route in the complete route matrix renders", async () => {
@@ -182,10 +224,11 @@ test("keeps all supplied content artwork optimized", async () => {
     "../public/content/masterclasses/social-media-marketing.webp",
     "../public/content/live-events/ai-marketing-masterclass.webp",
     "../public/content/live-events/english-fluency-workshop.webp",
+    "../public/content/courses/digital-marketing-course.webp",
   ];
   const sizes = await Promise.all(paths.map((path) => stat(new URL(path, import.meta.url)).then((file) => file.size)));
   assert.ok(sizes.every((size) => size < 70_000), "each supplied artwork asset should remain under 70 KB");
-  assert.ok(sizes.reduce((sum, size) => sum + size, 0) < 400_000, "all supplied artwork should remain under 400 KB");
+  assert.ok(sizes.reduce((sum, size) => sum + size, 0) < 430_000, "all supplied artwork should remain under 430 KB");
 });
 
 test("uses production-safe native navigation instead of the broken hosted link runtime", async () => {

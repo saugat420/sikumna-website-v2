@@ -1,8 +1,15 @@
 import { createAdminClient } from "../supabase/admin";
 import { createClient } from "../supabase/server";
 import type { SessionLearner } from "./profile";
+import { cookies } from "next/headers";
+import { isSupabaseConfigured } from "../supabase/config";
+import { decodeDemoLearner, demoAuthCookie } from "./demo";
 
 export async function getSessionLearner(): Promise<SessionLearner | null> {
+  if (!isSupabaseConfigured()) {
+    const cookieStore = await cookies();
+    return decodeDemoLearner(cookieStore.get(demoAuthCookie)?.value);
+  }
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();

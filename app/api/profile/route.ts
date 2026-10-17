@@ -2,8 +2,16 @@ import { NextResponse } from "next/server";
 import { createClient } from "../../../lib/supabase/server";
 import { createAdminClient } from "../../../lib/supabase/admin";
 import { syncMarketingContact } from "../../../lib/email/brevo";
+import { getSessionLearner } from "../../../lib/auth/session";
+import { demoAuthCookie, encodeDemoLearner } from "../../../lib/auth/demo";
+import { isSupabaseConfigured } from "../../../lib/supabase/config";
 
 export async function GET() {
+  if (!isSupabaseConfigured()) {
+    const learner = await getSessionLearner();
+    if (!learner) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+    return NextResponse.json({ profile: { full_name: learner.name, email: learner.email, emailVerified: true, learning_interest: learner.learningInterest, marketing_consent: learner.marketingConsent, signup_source: "demo", created_at: new Date().toISOString() } });
+  }
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -19,6 +27,14 @@ export async function PATCH(request: Request) {
   const body = await request.json().catch(() => ({})) as Record<string, unknown>;
   const learningInterest = String(body.learningInterest || "").trim().slice(0, 100) || null;
   const marketingConsent = body.marketingConsent === true;
+  if (!isSupabaseConfigured()) {
+    const learner = await getSessionLearner();
+    if (!learner) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+    const updated = { ...learner, learningInterest, marketingConsent };
+    const response = NextResponse.json({ ok: true, profile: { full_name: updated.name, learning_interest: updated.learningInterest, marketing_consent: updated.marketingConsent } });
+    response.cookies.set(demoAuthCookie, encodeDemoLearner(updated), { path: "/", maxAge: 604800, sameSite: "lax" });
+    return response;
+  }
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();

@@ -5,6 +5,7 @@
 - `/` — editorial homepage with full navigation.
 - `/programs` and `/programs/[slug]` — structured program discovery and details.
 - `/free-masterclasses` and `/free-masterclasses/[slug]` — recorded learning library and watch/discussion experience.
+- `/free-courses/digital-marketing` — authenticated 30-lesson free course experience.
 - `/stories`, `/about`, `/account`, `/sign-in`, `/register`, `/forgot-password`, `/reset-password` — supporting journeys.
 - `/admin/learners` — server-authorized learner administration and CSV export.
 - `/events/ai-marketing-masterclass` and `/events/english-fluency-workshop` — focused live-event pages with simplified navigation.
@@ -22,6 +23,8 @@ Light is the first-visit default. A pre-hydration script applies the saved `siku
 ## Learner authentication
 
 Supabase Auth is authoritative for learner identity, email verification, password storage and sessions. `public.profiles` stores only learner metadata and consent; it never stores passwords or duplicate email addresses. Row Level Security allows a learner to read only their own profile, while profile updates are validated through authenticated server routes. Admin access is checked server-side against `profiles.is_admin` and uses the service role only after authorization.
+
+When Supabase public credentials are absent, registration and sign-in enter a clearly labeled demo-preview mode. Demo accounts and their temporary passwords remain in the current browser, while a short-lived cookie lets server-rendered gated course pages recognize the preview session. Adding the Supabase environment variables automatically disables this fallback and restores production authentication.
 
 Masterclass pages stay public, but playback data comes from `/api/masterclasses/[slug]/playback` only after a server-side verified-session check. Public or unlisted YouTube URLs cannot be made unshareable by website login; signed playback requires a provider that supports expiring tokens.
 

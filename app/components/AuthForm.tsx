@@ -2,8 +2,23 @@
 import Link from "./SafeLink";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { demoAuthCookie, encodeDemoLearner } from "../../lib/auth/demo";
+import type { SessionLearner } from "../../lib/auth/profile";
 
-export default function AuthForm({ mode }: { mode: "register" | "sign-in" }) {
+type DemoAccount = SessionLearner & { password: string };
+const demoAccountsKey = "sikumna-demo-accounts-v1";
+
+function getDemoAccounts(): DemoAccount[] {
+  try { return JSON.parse(localStorage.getItem(demoAccountsKey) || "[]") as DemoAccount[]; }
+  catch { return []; }
+}
+
+function startDemoSession(account: DemoAccount) {
+  const learner: SessionLearner = { id: account.id, name: account.name, email: account.email, emailVerified: true, learningInterest: account.learningInterest, marketingConsent: account.marketingConsent };
+  document.cookie = `${demoAuthCookie}=${encodeDemoLearner(learner)}; Path=/; Max-Age=604800; SameSite=Lax`;
+}
+
+export default function AuthForm({ mode, demoMode = false }: { mode: "register" | "sign-in"; demoMode?: boolean }) {
   const search = useSearchParams();
   const [error, setError] = useState(search.get("error") || "");
   const [message, setMessage] = useState("");
@@ -19,6 +34,22 @@ export default function AuthForm({ mode }: { mode: "register" | "sign-in" }) {
     if (mode === "register" && password !== confirm) { setError("Passwords do not match."); return; }
     setLoading(true);
     try {
+      if (demoMode) {
+        const accounts = getDemoAccounts();
+        if (mode === "register") {
+          if (accounts.some((account) => account.email === email)) { setError("A demo account with this email already exists. Sign in instead."); return; }
+          const fullName = String(data.get("fullName") || "").trim();
+          const account: DemoAccount = { id: `demo-${Date.now()}`, name: fullName, email, password, emailVerified: true, learningInterest: String(data.get("learningInterest") || "") || null, marketingConsent: data.get("marketingConsent") === "on" };
+          localStorage.setItem(demoAccountsKey, JSON.stringify([...accounts, account]));
+          startDemoSession(account);
+        } else {
+          const account = accounts.find((candidate) => candidate.email === email && candidate.password === password);
+          if (!account) { setError("Demo account not found or password is incorrect. Create a demo account first."); return; }
+          startDemoSession(account);
+        }
+        window.location.assign(next);
+        return;
+      }
       const payload = mode === "register"
         ? { fullName: String(data.get("fullName") || ""), email, password, learningInterest: String(data.get("learningInterest") || ""), marketingConsent: data.get("marketingConsent") === "on", acceptTerms: data.get("acceptTerms") === "on", next }
         : { email, password, next };
@@ -38,6 +69,7 @@ export default function AuthForm({ mode }: { mode: "register" | "sign-in" }) {
     finally { setLoading(false); }
   }
   return <form className="auth-form" onSubmit={submit}>
+    {demoMode && <div className="demo-auth-notice" role="note"><strong>Demo preview mode</strong><span>This temporary account stays in this browser only. Use a test password that you do not use anywhere else.</span></div>}
     {mode === "register" && <><label>Full Name<input name="fullName" autoComplete="name" minLength={2} maxLength={100} required /></label><label>Learning Interest <span>(optional)</span><select name="learningInterest" defaultValue=""><option value="">Choose a topic</option>{["AI & Digital Marketing", "Freelancing", "English Communication", "SEO", "Ecommerce", "Personal Branding", "Other"].map((interest) => <option key={interest}>{interest}</option>)}</select></label></>}
     <label>Email Address<input name="email" type="email" autoComplete="email" required /></label>
     <label>Password<input name="password" type="password" autoComplete={mode === "register" ? "new-password" : "current-password"} minLength={8} required /></label>
