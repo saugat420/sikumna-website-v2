@@ -5,9 +5,8 @@
 - `/` — editorial homepage with full navigation.
 - `/programs` and `/programs/[slug]` — structured program discovery and details.
 - `/free-masterclasses` and `/free-masterclasses/[slug]` — recorded learning library and watch/discussion experience.
-- `/free-courses/digital-marketing` — authenticated 30-lesson free course experience.
-- `/stories`, `/about`, `/account`, `/sign-in`, `/register`, `/forgot-password`, `/reset-password` — supporting journeys.
-- `/admin/learners` — server-authorized learner administration and CSV export.
+- `/free-courses/digital-marketing` — public 30-lesson free course experience.
+- `/stories` and `/about` — supporting journeys.
 - `/events/ai-marketing-masterclass` and `/events/english-fluency-workshop` — focused live-event pages with simplified navigation.
 
 Internal navigation uses accessible native anchors through `SafeLink` to avoid the current hosted Vinext client-navigation bug. Recorded masterclasses and live-event landing pages remain separate products.
@@ -20,23 +19,13 @@ Programs, masterclasses and experts live in `data/` as typed, CMS-ready records.
 
 Light is the first-visit default. A pre-hydration script applies the saved `sikumna-theme-v2` value before paint; system preference is never consulted. A visitor's saved light or dark choice is restored before the page is shown. Both logo variants have identical dimensions.
 
-## Learner authentication
+## Open learning access
 
-Supabase Auth is authoritative for learner identity, email verification, password storage and sessions. `public.profiles` stores only learner metadata and consent; it never stores passwords or duplicate email addresses. Row Level Security allows a learner to read only their own profile, while profile updates are validated through authenticated server routes. Admin access is checked server-side against `profiles.is_admin` and uses the service role only after authorization.
-
-When Supabase public credentials are absent, registration and sign-in enter a clearly labeled demo-preview mode. Demo accounts and their temporary passwords remain in the current browser, while a short-lived cookie lets server-rendered gated course pages recognize the preview session. Adding the Supabase environment variables automatically disables this fallback and restores production authentication.
-
-Masterclass pages stay public, but playback data comes from `/api/masterclasses/[slug]/playback` only after a server-side verified-session check. Public or unlisted YouTube URLs cannot be made unshareable by website login; signed playback requires a provider that supports expiring tokens.
-
-Brevo sends one transactional welcome email after verification. An atomic database claim prevents duplicate sends, failures are recorded for retry, and marketing contact sync happens only with explicit promotional consent.
-
-## Comments and notifications
-
-`lib/comments/` defines repository and notification interfaces. The current comment repository is device-local. Reply hooks exist, but no browser email is sent and no secret is exposed.
+All recorded learning pages and playback endpoints are public. Visitors do not create profiles, register, sign in, verify an email address or maintain a website session. The public playback endpoint returns a privacy-enhanced YouTube embed URL when a verified content ID is present and an honest coming-soon status otherwise.
 
 ## Performance rules
 
-- Server components are the default; client code is isolated to menus, theme, forms, animation, video gating and comments.
+- Server components are the default; client code is isolated to menus, theme, forms, animation and the click-to-load video facade.
 - YouTube uses a facade and is not loaded until play.
 - Below-fold images use responsive `next/image` sizing and lazy loading.
 - Motion uses opacity/transform and respects reduced motion.
@@ -44,11 +33,5 @@ Brevo sends one transactional welcome email after verification. An atomic databa
 
 ## Required production configuration
 
-- Apply the Supabase migration and configure redirect URLs.
-- Add Supabase and Brevo values through encrypted hosting secrets.
-- Configure Brevo custom SMTP in Supabase for verification and recovery emails.
-- Enable CAPTCHA in Supabase Auth before a high-traffic launch.
-- Supply verified playback IDs or move videos to a signed-playback provider.
-- Comments remain device-local and should move to a moderated server repository before community launch.
-
-See `AUTH_SETUP.md` for exact setup and QA steps.
+- Supply verified YouTube IDs for recorded masterclasses and course lessons.
+- Keep the click-to-load video facade so YouTube is not loaded until a visitor chooses a video.

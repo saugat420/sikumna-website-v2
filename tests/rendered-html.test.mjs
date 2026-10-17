@@ -19,9 +19,9 @@ const routeMatrix = [
   "/programs/personal-branding", "/programs/communication", "/programs/personal-finance", "/programs/english-fluency",
   "/free-masterclasses", "/free-masterclasses/freelancing-101", "/free-masterclasses/seo-masterclass",
   "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/personal-branding-masterclass",
-  "/free-masterclasses/social-media-marketing", "/stories", "/about", "/sign-in", "/register", "/forgot-password", "/reset-password",
+  "/free-masterclasses/social-media-marketing", "/free-courses/digital-marketing", "/stories", "/about",
   "/help-center", "/faq", "/refund-policy", "/terms", "/privacy-policy",
-  "/account", "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
+  "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
 ];
 
 test("server-renders the complete Sikumna homepage", async () => {
@@ -69,39 +69,36 @@ test("renders both event registration landing pages", async () => {
   assert.doesNotMatch(englishHtml, /\/og\.png/);
 });
 
-test("renders the structured learning, program, and account journeys", async () => {
+test("renders the structured learning and program journeys without account gates", async () => {
   const responses = await Promise.all([
     render("/free-masterclasses"), render("/free-masterclasses/freelancing-101"),
-    render("/programs"), render("/programs/ai-powered-digital-marketing"), render("/register"), render("/sign-in"),
+    render("/programs"), render("/programs/ai-powered-digital-marketing"), render("/free-courses/digital-marketing"),
   ]);
   responses.forEach((response) => assert.equal(response.status, 200));
   const html = await Promise.all(responses.map((response) => response.text()));
   assert.match(html[0], /Learn Practical Skills for Free/);
   assert.match(html[0], /Free Digital Marketing Course/);
   assert.ok(html[0].indexOf("Free Digital Marketing Course") < html[0].indexOf("Freelancing 101"), "the free course should be listed before masterclasses");
-  assert.match(html[1], /Create your free account to watch this masterclass/);
+  assert.match(html[1], /Free to watch—no account or sign-in required/);
   assert.match(html[2], /A skill for your next chapter/);
   assert.match(html[3], /Ask about this cohort/);
-  assert.match(html[4], /Create Your Sikumna Account/);
-  assert.match(html[5], /Welcome Back/);
+  assert.match(html[4], /No account required/);
+  assert.doesNotMatch(html.join("\n"), /Create Your Sikumna Account|Welcome Back|Sign In/);
 });
 
-test("gates the complete digital marketing course behind learner login", async () => {
-  const demoLearner = Buffer.from(JSON.stringify({ id: "demo-test", name: "Demo Learner", email: "demo@example.com", emailVerified: true, learningInterest: "AI & Digital Marketing", marketingConsent: false })).toString("base64");
-  const [courseResponse, authenticatedCourseResponse, homeResponse, learningResponse, courseData, accordion] = await Promise.all([
+test("keeps the complete digital marketing course public", async () => {
+  const [courseResponse, homeResponse, learningResponse, courseData, accordion] = await Promise.all([
     render("/free-courses/digital-marketing"),
-    render("/free-courses/digital-marketing", { cookie: `sikumna-demo-user-v1=${demoLearner}` }),
     render("/"), render("/free-masterclasses"),
     readFile(new URL("../data/courses.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/components/CourseLessonAccordion.tsx", import.meta.url), "utf8"),
   ]);
-  assert.ok([307, 308].includes(courseResponse.status));
-  assert.match(courseResponse.headers.get("location") ?? "", /\/sign-in\?next=%2Ffree-courses%2Fdigital-marketing/);
-  assert.equal(authenticatedCourseResponse.status, 200);
-  const authenticatedCourse = await authenticatedCourseResponse.text();
-  assert.match(authenticatedCourse, /Welcome to Digital Marketing/);
-  assert.match(authenticatedCourse, /Your Next Steps in Digital Marketing/);
-  assert.match(authenticatedCourse, /Demo Learner/);
+  assert.equal(courseResponse.status, 200);
+  const course = await courseResponse.text();
+  assert.match(course, /Welcome to Digital Marketing/);
+  assert.match(course, /Your Next Steps in Digital Marketing/);
+  assert.match(course, /No account required/);
+  assert.doesNotMatch(course, /\/sign-in|\/register|Demo Learner/);
   const [home, learning] = await Promise.all([homeResponse.text(), learningResponse.text()]);
   assert.match(home, /Must Watch/);
   assert.match(learning, /Free complete course/);
@@ -110,20 +107,6 @@ test("gates the complete digital marketing course behind learner login", async (
   assert.equal((courseData.match(/^ {2}".+",$/gm) ?? []).length, 30);
   assert.match(accordion, /aria-expanded=\{isOpen\}/);
   assert.match(accordion, /setOpenLesson\(isOpen \? "" : lesson\.id\)/);
-});
-
-test("provides clearly labeled browser-local demo authentication when Supabase is absent", async () => {
-  const [register, signIn, authForm, session] = await Promise.all([
-    render("/register"), render("/sign-in"),
-    readFile(new URL("../app/components/AuthForm.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../lib/auth/session.ts", import.meta.url), "utf8"),
-  ]);
-  const [registerHtml, signInHtml] = await Promise.all([register.text(), signIn.text()]);
-  assert.match(registerHtml, /Demo preview mode/);
-  assert.match(signInHtml, /Demo preview mode/);
-  assert.match(authForm, /sikumna-demo-accounts-v1/);
-  assert.match(authForm, /window\.location\.assign\(next\)/);
-  assert.match(session, /decodeDemoLearner/);
 });
 
 test("every route in the complete route matrix renders", async () => {
@@ -167,7 +150,7 @@ test("every rendered internal link resolves to a real route or section", async (
   assert.match(aiEvent, /id="reserve"/);
 });
 
-test("masterclass cards open their detail pages before authentication", async () => {
+test("masterclass cards open their public detail pages", async () => {
   const source = await readFile(new URL("../app/components/MasterclassLink.tsx", import.meta.url), "utf8");
   assert.match(source, /SafeLink/);
   assert.match(source, /href=\{`\/free-masterclasses\/\$\{slug\}`\}/);
@@ -232,17 +215,15 @@ test("keeps all supplied content artwork optimized", async () => {
 });
 
 test("uses production-safe native navigation instead of the broken hosted link runtime", async () => {
-  const [safeLink, header, footer, auth] = await Promise.all([
+  const [safeLink, header, footer] = await Promise.all([
     readFile(new URL("../app/components/SafeLink.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/SiteFooter.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/components/AuthForm.tsx", import.meta.url), "utf8"),
   ]);
   assert.match(safeLink, /return <a href=\{href\}/);
   assert.match(header, /from "\.\/SafeLink"/);
   assert.match(footer, /from "\.\/SafeLink"/);
-  assert.doesNotMatch(`${header}\n${footer}\n${auth}`, /next\/link|useRouter|router\.push/);
-  assert.match(auth, /window\.location\.assign\(next\)/);
+  assert.doesNotMatch(`${header}\n${footer}`, /next\/link|useRouter|router\.push/);
 });
 
 test("keeps page imagery within the performance budget", async () => {
@@ -300,7 +281,7 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.match(designSystem, /export function Container/);
   assert.match(designSystem, /fit = "contain"/);
   assert.match(designSystemDocs, /Future-page checklist/);
-  assert.match(architecture, /Learner authentication/);
+  assert.match(architecture, /Open learning access/);
   assert.doesNotMatch(eventPage, /event-hero-art/);
   assert.doesNotMatch(eventPage, /RotatingWords|event-animated-line/);
   assert.doesNotMatch(eventPage, /ReviewerIdentity/);
@@ -319,36 +300,32 @@ test("keeps the shared design system, assets, and responsive implementation in p
   ]);
 });
 
-test("keeps learner authentication server-authorized and production-configurable", async () => {
-  const [migration, registration, playback, welcomeEmail, environment, homepage] = await Promise.all([
-    readFile(new URL("../supabase/migrations/202610170001_create_learner_profiles.sql", import.meta.url), "utf8"),
-    readFile(new URL("../app/api/auth/register/route.ts", import.meta.url), "utf8"),
+test("keeps recorded learning public and removes learner authentication", async () => {
+  const [playback, environment, homepage, header, packageJson] = await Promise.all([
     readFile(new URL("../app/api/masterclasses/[slug]/playback/route.ts", import.meta.url), "utf8"),
-    readFile(new URL("../lib/email/brevo.ts", import.meta.url), "utf8"),
     readFile(new URL("../.env.example", import.meta.url), "utf8"),
     readFile(new URL("../app/HomeClient.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  assert.match(migration, /enable row level security/i);
-  assert.match(migration, /revoke insert, update, delete on public\.profiles from anon, authenticated/i);
-  assert.match(migration, /claim_welcome_email/);
-  assert.doesNotMatch(migration, /password/i);
-  assert.match(registration, /acceptTerms/);
-  assert.match(registration, /marketing_consent: body\.marketingConsent === true/);
-  assert.match(playback, /email_confirmed_at/);
-  assert.match(playback, /cache-control": "private, no-store/);
-  assert.match(welcomeEmail, /idempotencyKey: user\.id/);
-  assert.match(welcomeEmail, /if \(profile\.marketing_consent\)/);
-  assert.doesNotMatch(environment, /service_role=[A-Za-z0-9._-]{20,}/i);
+  assert.doesNotMatch(playback, /auth|getUser|email_confirmed_at/i);
+  assert.match(playback, /cache-control": "public, max-age=300/);
+  assert.doesNotMatch(environment, /SUPABASE|BREVO|SERVICE_ROLE/i);
+  assert.doesNotMatch(packageJson, /@supabase/);
+  assert.doesNotMatch(header, /AccountMenu|Sign In|Create Account/);
   assert.match(homepage, /Radio size=\{19\}/);
   assert.match(homepage, /MessagesSquare size=\{19\}/);
   assert.match(homepage, /BriefcaseBusiness size=\{19\}/);
   assert.match(homepage, /Target size=\{19\}/);
 
-  const [playbackResponse, exportResponse] = await Promise.all([
+  const [playbackResponse, signInResponse, registerResponse, accountResponse] = await Promise.all([
     render("/api/masterclasses/freelancing-101/playback"),
-    render("/api/admin/learners/export"),
+    render("/sign-in"), render("/register"), render("/account"),
   ]);
-  assert.ok([401, 503].includes(playbackResponse.status), "playback must never be public");
-  assert.ok([401, 403].includes(exportResponse.status), "learner export must never be public");
+  assert.equal(playbackResponse.status, 200);
+  assert.match(await playbackResponse.text(), /coming_soon/);
+  assert.equal(signInResponse.status, 404);
+  assert.equal(registerResponse.status, 404);
+  assert.equal(accountResponse.status, 404);
 });

@@ -5,7 +5,6 @@ import { useState } from "react";
 import BrandLogo from "./BrandLogo";
 import { Button, Container } from "./DesignSystem";
 import ThemeToggle from "./ThemeToggle";
-import AccountMenu from "./AccountMenu";
 import LiveMasterclassMenu from "./LiveMasterclassMenu";
 
 export default function SiteHeader({ variant = "default", ctaHref = "/events/ai-marketing-masterclass", ctaLabel = "Join a Live Masterclass" }: { variant?: "default" | "landing"; ctaHref?: string; ctaLabel?: string }) {
@@ -22,7 +21,7 @@ export default function SiteHeader({ variant = "default", ctaHref = "/events/ai-
     <Container className="site-nav">
       <Link className="brand" href="/" aria-label="Sikumna Nepal home"><BrandLogo /></Link>
       {isLanding ? <nav className="landing-nav" aria-label="Landing page navigation"><Link href="/">Home</Link></nav> : <nav className="desktop-nav" aria-label="Primary navigation">{links.map(([label, href]) => <Link href={href} key={label}>{label}</Link>)}</nav>}
-      <div className="nav-actions">{isLanding ? <Button href={ctaHref} size="sm" className="nav-cta">{ctaLabel}</Button> : <LiveMasterclassMenu />}<ThemeToggle />{!isLanding && <AccountMenu />}<button className="menu-button" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={24} /> : <Menu size={24} />}</button></div>
+      <div className="nav-actions">{isLanding ? <Button href={ctaHref} size="sm" className="nav-cta">{ctaLabel}</Button> : <LiveMasterclassMenu />}<ThemeToggle /><button className="menu-button" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={24} /> : <Menu size={24} />}</button></div>
     </Container>
     {menuOpen && <nav className="mobile-nav" aria-label="Mobile navigation">{isLanding ? <><Link href="/" onClick={() => setMenuOpen(false)}>Home</Link><Button href={ctaHref} onClick={() => setMenuOpen(false)}>{ctaLabel}</Button></> : <>{links.map(([label, href]) => <Link href={href} key={label} onClick={() => setMenuOpen(false)}>{label}</Link>)}<details className="mobile-live-dropdown"><summary>Free live sessions <ChevronDown size={18} /></summary><div><a className="mobile-live-link" href="https://ai.sikumna.com/" onClick={() => setMenuOpen(false)}><strong>AI Marketing Masterclass</strong><small>Reserve your free seat →</small></a><a className="mobile-live-link" href="https://sen.sikumna.com/" onClick={() => setMenuOpen(false)}><strong>English Fluency Workshop</strong><small>Reserve your free seat →</small></a></div></details></>}</nav>}
   </header>;
