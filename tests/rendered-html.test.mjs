@@ -19,7 +19,7 @@ const routeMatrix = [
   "/programs/personal-branding", "/programs/communication", "/programs/personal-finance", "/programs/english-fluency",
   "/free-masterclasses", "/free-masterclasses/freelancing-101", "/free-masterclasses/seo-masterclass",
   "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/personal-branding-masterclass",
-  "/free-masterclasses/social-media-marketing", "/stories", "/about", "/sign-in", "/register",
+  "/free-masterclasses/social-media-marketing", "/stories", "/about", "/sign-in", "/register", "/forgot-password", "/reset-password",
   "/help-center", "/faq", "/refund-policy", "/terms", "/privacy-policy",
   "/account", "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
 ];
@@ -77,7 +77,7 @@ test("renders the structured learning, program, and account journeys", async () 
   responses.forEach((response) => assert.equal(response.status, 200));
   const html = await Promise.all(responses.map((response) => response.text()));
   assert.match(html[0], /Learn Practical Skills for Free/);
-  assert.match(html[1], /Create a free account to watch/);
+  assert.match(html[1], /Create your free account to watch this masterclass/);
   assert.match(html[2], /A skill for your next chapter/);
   assert.match(html[3], /Ask about this cohort/);
   assert.match(html[4], /Create Your Sikumna Account/);
@@ -149,6 +149,27 @@ test("uses the supplied artwork and simplified learning detail pages", async () 
   assert.doesNotMatch(masterclassHtml, /About This Masterclass|What You’ll Learn|About the trainer/);
   assert.match(header, /AI Marketing Masterclass/);
   assert.match(header, /English Fluency Workshop/);
+});
+
+test("applies the latest content and readability refinements", async () => {
+  const [homeResponse, programsResponse, masterclassesResponse, masterclassResponse, storiesResponse, refundResponse, programSource] = await Promise.all([
+    render("/"), render("/programs"), render("/free-masterclasses"),
+    render("/free-masterclasses/seo-masterclass"), render("/stories"), render("/refund-policy"),
+    readFile(new URL("../app/components/ProgramDirectory.tsx", import.meta.url), "utf8"),
+  ]);
+  const [home, programs, masterclasses, masterclass, stories, refund] = await Promise.all(
+    [homeResponse, programsResponse, masterclassesResponse, masterclassResponse, storiesResponse, refundResponse].map((response) => response.text()),
+  );
+
+  assert.match(programs, /Live cohort/);
+  assert.doesNotMatch(programs, /Learn live, together/);
+  assert.match(programSource, /<i aria-hidden="true" \/>Live cohort/);
+  assert.doesNotMatch(masterclasses, /Saugat Basnet|Rajan Adhikari|Prakriti Tamang/);
+  assert.doesNotMatch(masterclass, /Saugat Basnet|Rajan Adhikari|Prakriti Tamang/);
+  assert.doesNotMatch(home, /Google review · (?:\d+ months ago|a year ago)/);
+  assert.doesNotMatch(stories, /Google review · (?:\d+ months ago|a year ago)/);
+  assert.match(refund, /refund-policy-copy/);
+  assert.match(home, /From curiosity to real-world skill/);
 });
 
 test("keeps all supplied content artwork optimized", async () => {
@@ -235,7 +256,7 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.match(designSystem, /export function Container/);
   assert.match(designSystem, /fit = "contain"/);
   assert.match(designSystemDocs, /Future-page checklist/);
-  assert.match(architecture, /Development authentication/);
+  assert.match(architecture, /Learner authentication/);
   assert.doesNotMatch(eventPage, /event-hero-art/);
   assert.doesNotMatch(eventPage, /RotatingWords|event-animated-line/);
   assert.doesNotMatch(eventPage, /ReviewerIdentity/);
@@ -252,4 +273,38 @@ test("keeps the shared design system, assets, and responsive implementation in p
     access(new URL("../public/generated/events/english-fluency-workshop-hero.webp", import.meta.url)),
     access(new URL("../public/og.png", import.meta.url)),
   ]);
+});
+
+test("keeps learner authentication server-authorized and production-configurable", async () => {
+  const [migration, registration, playback, welcomeEmail, environment, homepage] = await Promise.all([
+    readFile(new URL("../supabase/migrations/202610170001_create_learner_profiles.sql", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/auth/register/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/masterclasses/[slug]/playback/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../lib/email/brevo.ts", import.meta.url), "utf8"),
+    readFile(new URL("../.env.example", import.meta.url), "utf8"),
+    readFile(new URL("../app/HomeClient.tsx", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(migration, /enable row level security/i);
+  assert.match(migration, /revoke insert, update, delete on public\.profiles from anon, authenticated/i);
+  assert.match(migration, /claim_welcome_email/);
+  assert.doesNotMatch(migration, /password/i);
+  assert.match(registration, /acceptTerms/);
+  assert.match(registration, /marketing_consent: body\.marketingConsent === true/);
+  assert.match(playback, /email_confirmed_at/);
+  assert.match(playback, /cache-control": "private, no-store/);
+  assert.match(welcomeEmail, /idempotencyKey: user\.id/);
+  assert.match(welcomeEmail, /if \(profile\.marketing_consent\)/);
+  assert.doesNotMatch(environment, /service_role=[A-Za-z0-9._-]{20,}/i);
+  assert.match(homepage, /Radio size=\{19\}/);
+  assert.match(homepage, /MessagesSquare size=\{19\}/);
+  assert.match(homepage, /BriefcaseBusiness size=\{19\}/);
+  assert.match(homepage, /Target size=\{19\}/);
+
+  const [playbackResponse, exportResponse] = await Promise.all([
+    render("/api/masterclasses/freelancing-101/playback"),
+    render("/api/admin/learners/export"),
+  ]);
+  assert.ok([401, 503].includes(playbackResponse.status), "playback must never be public");
+  assert.ok([401, 403].includes(exportResponse.status), "learner export must never be public");
 });

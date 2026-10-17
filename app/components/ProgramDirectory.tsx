@@ -11,10 +11,10 @@ function ProgramCard({ program }: { program: Program }) {
   return <article className="cohort-card">
     <div className="cohort-card-visual">
       <Image src={program.image} alt={`${program.title} illustration`} fill sizes="(max-width: 620px) 100vw, 50vw" />
-      <span>Live cohort</span>
+      <span><i aria-hidden="true" />Live cohort</span>
     </div>
     <div className="cohort-card-body"><small>{program.category}</small><h3>{program.title}</h3><p>{program.description}</p>
-      <div><span>Learn live, together</span><Link href={`/programs/${program.slug}`}>Explore program <ArrowUpRight size={18} /></Link></div>
+      <div><Link href={`/programs/${program.slug}`}>Explore program <ArrowUpRight size={18} /></Link></div>
     </div>
   </article>;
 }
