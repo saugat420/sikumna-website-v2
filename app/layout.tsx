@@ -7,7 +7,7 @@ const manrope = Manrope({
   subsets: ["latin"],
 });
 
-const siteUrl = "https://sikumna-nepal.digitalsaugatb.chatgpt.site";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sikumna-nepal.digitalsaugatb.chatgpt.site";
 const title = "Sikumna Nepal | Learn Skills That Matter";
 const description = "Live mentorship, workshops and expert-led programs for practical, real-life growth.";
 
