@@ -329,3 +329,18 @@ test("keeps recorded learning public and removes learner authentication", async 
   assert.equal(registerResponse.status, 404);
   assert.equal(accountResponse.status, 404);
 });
+
+test("keeps masterclass pages spacious with a landscape player at every viewport", async () => {
+  const [library, detail, css] = await Promise.all([
+    readFile(new URL("../app/free-masterclasses/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/free-masterclasses/[slug]/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(library, /free-learning-page/);
+  assert.match(library, /free-learning-content/);
+  assert.match(detail, /watch-page/);
+  assert.match(css, /\.watch-page \.video-shell\{[^}]*aspect-ratio:16\/9/);
+  assert.match(css, /@media\(max-width:620px\)[\s\S]*\.watch-page \.video-shell[^}]*aspect-ratio:16\/9/);
+  assert.match(css, /\.watch-page \.related-content\{padding:96px 0 0\}/);
+});
