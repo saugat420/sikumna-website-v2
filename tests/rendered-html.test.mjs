@@ -245,10 +245,11 @@ test("keeps the shared design system, assets, and responsive implementation in p
   assert.match(home, /learnerReviews/);
   assert.doesNotMatch(home, /ReviewerIdentity/);
   assert.match(home, /ProgramDirectory/);
-  assert.match(layout, /className="dark"/);
+  assert.doesNotMatch(layout, /className="dark"/);
+  assert.match(layout, /colorScheme: "light"/);
   assert.doesNotMatch(layout, /prefers-color-scheme/);
   assert.doesNotMatch(layout, /next\/headers|generateMetadata/);
-  assert.match(layout, /saved==='light'\?'light':'dark'/);
+  assert.match(layout, /saved==='dark'\?'dark':'light'/);
   assert.match(layout, /type="speculationrules"/);
   assert.match(css, /@media\(max-width:620px\)/);
   assert.match(css, /prefers-reduced-motion/);

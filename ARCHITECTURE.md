@@ -17,7 +17,7 @@ Programs, masterclasses and experts live in `data/` as typed, CMS-ready records.
 
 ## Theme
 
-Dark is the first-visit default. A pre-hydration script applies the saved `sikumna-theme` value before paint; system preference is never consulted. The root renders dark on the server, while a saved light preference removes that class before the page is shown. Both logo variants have identical dimensions.
+Light is the first-visit default. A pre-hydration script applies the saved `sikumna-theme-v2` value before paint; system preference is never consulted. A visitor's saved light or dark choice is restored before the page is shown. Both logo variants have identical dimensions.
 
 ## Learner authentication
 

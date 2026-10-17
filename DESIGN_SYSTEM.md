@@ -39,7 +39,7 @@ Event pages use one structured record in `app/events/eventData.ts` and one reusa
 
 ## Themes
 
-Theme tokens live in `app/globals.css`. `ThemeToggle` persists `sikumna-theme` and `app/layout.tsx` applies it before paint. Use tokens such as `--surface`, `--surface-raised`, `--surface-alt`, `--ink`, `--body`, `--border`, and `--primary-soft`; do not hard-code light backgrounds inside reusable components.
+Theme tokens live in `app/globals.css`. `ThemeToggle` persists `sikumna-theme-v2` and `app/layout.tsx` applies it before paint. Use tokens such as `--surface`, `--surface-raised`, `--surface-alt`, `--ink`, `--body`, `--border`, and `--primary-soft`; do not hard-code light backgrounds inside reusable components.
 
 ## Responsive and accessibility rules
 

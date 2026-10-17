@@ -31,9 +31,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" style={{ colorScheme: "dark" }} suppressHydrationWarning>
+    <html lang="en" style={{ colorScheme: "light" }} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var saved=localStorage.getItem('sikumna-theme-v2');var theme=saved==='light'?'light':'dark';var root=document.documentElement;root.classList.toggle('dark',theme==='dark');root.style.colorScheme=theme;root.dataset.theme=theme;}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';document.documentElement.dataset.theme='dark';}})();` }} />
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var saved=localStorage.getItem('sikumna-theme-v2');var theme=saved==='dark'?'dark':'light';var root=document.documentElement;root.classList.toggle('dark',theme==='dark');root.style.colorScheme=theme;root.dataset.theme=theme;}catch(e){document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light';document.documentElement.dataset.theme='light';}})();` }} />
         <script type="speculationrules" dangerouslySetInnerHTML={{ __html: JSON.stringify({ prefetch: [{ source: "document", where: { href_matches: "/*" }, eagerness: "moderate" }] }) }} />
       </head>
       <body className={`${manrope.variable} antialiased`}>
