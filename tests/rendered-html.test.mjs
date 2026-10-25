@@ -19,7 +19,7 @@ const routeMatrix = [
   "/programs/personal-branding", "/programs/communication", "/programs/personal-finance", "/programs/english-fluency",
   "/free-masterclasses", "/free-masterclasses/freelancing-101", "/free-masterclasses/seo-masterclass",
   "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/personal-branding-masterclass",
-  "/free-masterclasses/social-media-marketing", "/free-courses/digital-marketing", "/stories", "/about",
+  "/free-masterclasses/social-media-marketing", "/free-courses/digital-marketing", "/free-dm-course", "/stories", "/about",
   "/help-center", "/faq", "/refund-policy", "/terms", "/privacy-policy",
   "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
 ];
@@ -107,6 +107,16 @@ test("keeps the complete digital marketing course public", async () => {
   assert.equal((courseData.match(/^ {2}".+",$/gm) ?? []).length, 30);
   assert.match(accordion, /aria-expanded=\{isOpen\}/);
   assert.match(accordion, /setOpenLesson\(isOpen \? "" : lesson\.id\)/);
+});
+
+test("renders the free digital marketing course landing page", async () => {
+  const response = await render("/free-dm-course");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Learn Digital Marketing in Just 30 Days/);
+  assert.match(html, /One video lesson every day/);
+  assert.match(html, /Join the FREE 30-Day Course/);
+  assert.doesNotMatch(html, /free-dm-hero-art|free-dm-steps|free-dm-form/);
 });
 
 test("every route in the complete route matrix renders", async () => {
