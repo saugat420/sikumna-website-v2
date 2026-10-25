@@ -118,11 +118,31 @@ test("renders the free digital marketing course landing page", async () => {
   assert.match(html, /One video in your email every day/);
   assert.match(html, /How the 30-day course works/);
   assert.match(html, /Join the FREE 30-Day Course/);
+  assert.match(html, /action="https:\/\/form\.flodesk\.com\/forms\/6952526d047e037ff4b248c7\/submit"/);
+  assert.match(html, /name="firstName"/);
+  assert.match(html, /name="confirm_email_address"/);
   assert.match(html, /Back to homepage/);
   assert.match(thanks, /You’re in!/);
   assert.match(thanks, /Don’t miss your first lesson/);
   assert.match(thanks, /Back to homepage/);
   assert.doesNotMatch(`${html}\n${thanks}`, /Switch to dark mode|Open menu|Primary navigation/);
+});
+
+test("submits the preserved landing form to Flodesk before redirecting", async () => {
+  const [formSource, routeSource, home, library] = await Promise.all([
+    readFile(new URL("../app/free-dm-course/CourseLandingForm.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/flodesk/free-dm-course/route.ts", import.meta.url), "utf8"),
+    render("/").then((response) => response.text()),
+    render("/free-masterclasses").then((response) => response.text()),
+  ]);
+  assert.match(formSource, /fetch\("\/api\/flodesk\/free-dm-course"/);
+  assert.match(formSource, /window\.location\.assign\(new URL\("\/free-dm-course\/thank-you"/);
+  assert.match(routeSource, /form\.flodesk\.com\/forms\/6952526d047e037ff4b248c7\/submit/);
+  assert.match(routeSource, /new URLSearchParams\(\{ firstName, email, confirm_email_address: "" \}\)/);
+  assert.match(home, /href="\/free-dm-course"[^>]*>Start free course/);
+  assert.doesNotMatch(home, /No account required/);
+  assert.match(library, /href="\/free-dm-course"/);
+  assert.doesNotMatch(library, /No sign-up or login required/);
 });
 
 test("every route in the complete route matrix renders", async () => {
@@ -377,6 +397,8 @@ test("publishes every supplied masterclass video and removes retired masterclass
   assert.match(playerSource, /aria-label="Video timeline"/);
   assert.match(playerSource, /Pause video/);
   assert.match(playerSource, /seekTo\(seconds, true\)/);
+  assert.match(playerSource, /i\.ytimg\.com\/vi\/\$\{masterclass\.youtubeId\}\/0\.jpg/);
+  assert.match(playerSource, /controls: 0/);
 });
 
 test("keeps masterclass pages spacious with a landscape player at every viewport", async () => {

@@ -126,7 +126,7 @@ function CustomYouTubePlayer({ videoId, title }: { videoId: string; title: strin
   </div>;
 }
 
-export default function MasterclassExperience({ masterclass }: { masterclass: Pick<Masterclass, "slug" | "title"> }) {
+export default function MasterclassExperience({ masterclass }: { masterclass: Pick<Masterclass, "slug" | "title" | "youtubeId"> }) {
   const [playback, setPlayback] = useState<Playback>({ state: "idle" });
 
   async function loadVideo() {
@@ -146,6 +146,6 @@ export default function MasterclassExperience({ masterclass }: { masterclass: Pi
       {playback.state === "ready" && videoId ? <CustomYouTubePlayer videoId={videoId} title={masterclass.title} />
       : playback.state === "coming-soon" ? <div className="video-facade video-coming-soon" role="status"><span><Play size={34} aria-hidden="true" /></span><strong>Video coming soon</strong><small>A video URL has not been supplied for this masterclass yet.</small></div>
       : playback.state === "error" ? <div className="video-facade video-coming-soon" role="alert"><CircleAlert size={30} /><strong>Video unavailable</strong><small>{playback.message}</small><button className="text-button" type="button" onClick={loadVideo}>Try again</button></div>
-      : <button className="video-facade" type="button" onClick={loadVideo} disabled={playback.state === "loading"} aria-label={`Play ${masterclass.title}`}><span><Play size={34} fill="currentColor" /></span><strong>{playback.state === "loading" ? "Loading video…" : "Play Masterclass"}</strong><small>Free to watch—no account or sign-in required.</small></button>}
+      : <button className={`video-facade${masterclass.youtubeId ? " video-preview" : ""}`} style={masterclass.youtubeId ? { backgroundImage: `url(https://i.ytimg.com/vi/${masterclass.youtubeId}/0.jpg)` } : undefined} type="button" onClick={loadVideo} disabled={playback.state === "loading"} aria-label={`Play ${masterclass.title}`}><span><Play size={34} fill="currentColor" /></span><strong>{playback.state === "loading" ? "Loading video…" : "Play Masterclass"}</strong><small>Free to watch—no account or sign-in required.</small></button>}
     </section>;
 }
