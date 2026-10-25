@@ -24,7 +24,7 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
 }
 
 function LearningCard({ item }: { item: (typeof masterclasses)[number] }) {
-  return <Card className="learning-card"><div className="learning-card-art"><Image src={item.thumbnail} alt="" fill sizes="(max-width: 760px) 100vw, 33vw" /></div><div className="learning-card-copy"><span>{item.category}</span><h3>{item.title}</h3><p>{item.description}</p><div><span>{item.duration}</span></div><Link href={`/free-masterclasses/${item.slug}`} aria-label={`Watch ${item.title}`}><Play size={16} fill="currentColor" /></Link></div></Card>;
+  return <Card className="learning-card"><div className="learning-card-art"><Image src={item.thumbnail} alt="" fill sizes="(max-width: 760px) 100vw, 33vw" /></div><div className="learning-card-copy"><span>{item.category}</span><h3>{item.title}</h3><p>{item.summary}</p><div><span>{item.duration}</span></div><Link href={`/free-masterclasses/${item.slug}`} aria-label={`Watch ${item.title}`}><Play size={16} fill="currentColor" /></Link></div></Card>;
 }
 
 export default function HomeClient() {

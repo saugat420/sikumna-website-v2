@@ -18,8 +18,8 @@ const routeMatrix = [
   "/", "/programs", "/programs/digital-marketing", "/programs/ai-powered-digital-marketing",
   "/programs/personal-branding", "/programs/communication", "/programs/personal-finance", "/programs/english-fluency",
   "/free-masterclasses", "/free-masterclasses/freelancing-101", "/free-masterclasses/seo-masterclass",
-  "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/personal-branding-masterclass",
-  "/free-masterclasses/social-media-marketing", "/free-courses/digital-marketing", "/free-dm-course", "/free-dm-course/thank-you", "/stories", "/about",
+  "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/client-acquisition-masterclass",
+  "/free-masterclasses/freelancing-to-agency-blueprint", "/free-courses/digital-marketing", "/free-dm-course", "/free-dm-course/thank-you", "/stories", "/about",
   "/help-center", "/faq", "/refund-policy", "/terms", "/privacy-policy",
   "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
 ];
@@ -176,7 +176,7 @@ test("masterclass cards open their public detail pages", async () => {
 test("uses the supplied artwork and simplified learning detail pages", async () => {
   const [home, programsPage, programDetail, masterclassDetail, header] = await Promise.all([
     render("/"), render("/programs"), render("/programs/digital-marketing"),
-    render("/free-masterclasses/social-media-marketing"),
+    render("/free-masterclasses/client-acquisition-masterclass"),
     readFile(new URL("../app/components/LiveMasterclassMenu.tsx", import.meta.url), "utf8"),
   ]);
   const [homeHtml, programsHtml, programHtml, masterclassHtml] = await Promise.all([home, programsPage, programDetail, masterclassDetail].map((response) => response.text()));
@@ -340,10 +340,43 @@ test("keeps recorded learning public and removes learner authentication", async 
     render("/sign-in"), render("/register"), render("/account"),
   ]);
   assert.equal(playbackResponse.status, 200);
-  assert.match(await playbackResponse.text(), /coming_soon/);
+  assert.match(await playbackResponse.text(), /DLUSVDidHqc/);
   assert.equal(signInResponse.status, 404);
   assert.equal(registerResponse.status, 404);
   assert.equal(accountResponse.status, 404);
+});
+
+test("publishes every supplied masterclass video and removes retired masterclasses", async () => {
+  const playerSource = await readFile(new URL("../app/components/MasterclassExperience.tsx", import.meta.url), "utf8");
+  const expectedVideos = new Map([
+    ["freelancing-101", "DLUSVDidHqc"],
+    ["client-acquisition-masterclass", "dMtglTBOu4E"],
+    ["freelancing-to-agency-blueprint", "GXXJjfv4pAo"],
+    ["ecommerce-masterclass", "ylRZKb8HhMg"],
+  ]);
+
+  for (const [slug, youtubeId] of expectedVideos) {
+    const [pageResponse, playbackResponse] = await Promise.all([
+      render(`/free-masterclasses/${slug}`),
+      render(`/api/masterclasses/${slug}/playback`),
+    ]);
+    assert.equal(pageResponse.status, 200, `${slug} page should render`);
+    assert.equal(playbackResponse.status, 200, `${slug} video should load`);
+    assert.match(await playbackResponse.text(), new RegExp(youtubeId));
+  }
+
+  const [library, removedBranding, removedSocial] = await Promise.all([
+    render("/free-masterclasses").then((response) => response.text()),
+    render("/free-masterclasses/personal-branding-masterclass"),
+    render("/free-masterclasses/social-media-marketing"),
+  ]);
+  assert.doesNotMatch(library, /Personal Branding Masterclass|Social Media Marketing/);
+  assert.equal(removedBranding.status, 404);
+  assert.equal(removedSocial.status, 404);
+  assert.match(playerSource, /controls: 0/);
+  assert.match(playerSource, /aria-label="Video timeline"/);
+  assert.match(playerSource, /Pause video/);
+  assert.match(playerSource, /seekTo\(seconds, true\)/);
 });
 
 test("keeps masterclass pages spacious with a landscape player at every viewport", async () => {
