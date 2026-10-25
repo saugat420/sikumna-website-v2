@@ -19,7 +19,7 @@ const routeMatrix = [
   "/programs/personal-branding", "/programs/communication", "/programs/personal-finance", "/programs/english-fluency",
   "/free-masterclasses", "/free-masterclasses/freelancing-101", "/free-masterclasses/seo-masterclass",
   "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/personal-branding-masterclass",
-  "/free-masterclasses/social-media-marketing", "/free-courses/digital-marketing", "/free-dm-course", "/stories", "/about",
+  "/free-masterclasses/social-media-marketing", "/free-courses/digital-marketing", "/free-dm-course", "/free-dm-course/thank-you", "/stories", "/about",
   "/help-center", "/faq", "/refund-policy", "/terms", "/privacy-policy",
   "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
 ];
@@ -110,13 +110,19 @@ test("keeps the complete digital marketing course public", async () => {
 });
 
 test("renders the free digital marketing course landing page", async () => {
-  const response = await render("/free-dm-course");
+  const [response, thanksResponse] = await Promise.all([render("/free-dm-course"), render("/free-dm-course/thank-you")]);
   assert.equal(response.status, 200);
-  const html = await response.text();
-  assert.match(html, /Learn Digital Marketing in Just 30 Days/);
-  assert.match(html, /One video lesson every day/);
+  assert.equal(thanksResponse.status, 200);
+  const [html, thanks] = await Promise.all([response.text(), thanksResponse.text()]);
+  assert.match(html, /Learn Digital<br\/>Marketing in/);
+  assert.match(html, /One video in your email every day/);
+  assert.match(html, /How the 30-day course works/);
   assert.match(html, /Join the FREE 30-Day Course/);
-  assert.doesNotMatch(html, /free-dm-hero-art|free-dm-steps|free-dm-form/);
+  assert.match(html, /Back to homepage/);
+  assert.match(thanks, /You’re in!/);
+  assert.match(thanks, /Don’t miss your first lesson/);
+  assert.match(thanks, /Back to homepage/);
+  assert.doesNotMatch(`${html}\n${thanks}`, /Switch to dark mode|Open menu|Primary navigation/);
 });
 
 test("every route in the complete route matrix renders", async () => {
