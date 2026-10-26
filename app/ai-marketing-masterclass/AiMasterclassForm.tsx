@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import courseStyles from "../free-dm-course/course-landing.module.css";
 
 export default function AiMasterclassForm() {
@@ -30,9 +30,9 @@ export default function AiMasterclassForm() {
 
   return <div className={courseStyles.formShell} id="join">
     <div className={courseStyles.formCard}>
-      <h2>Reserve your free seat. <Sparkles size={27} /></h2>
+      <h2>Reserve your free seat.</h2>
       <p>Fill out this short form. We’ll send the live-session details to your email and WhatsApp.</p>
-      <form action="https://form.flodesk.com/forms/6a0056f54d292a1f518a517b/submit" method="post" onSubmit={submit}>
+      <form action="https://form.flodesk.com/forms/6a0056f54d292a1f518a517b/submit" method="post" data-ff-el="form" data-flodesk-form-id="6a0056f54d292a1f518a517b" onSubmit={submit}>
         <label htmlFor="ai-first-name">First name</label>
         <input id="ai-first-name" name="firstName" autoComplete="given-name" maxLength={255} placeholder="Enter your first name" required />
         <label htmlFor="ai-email">Email address</label>

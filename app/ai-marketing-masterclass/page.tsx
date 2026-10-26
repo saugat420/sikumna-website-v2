@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ArrowRight, Bot, Check, FileText, Lightbulb, Mail, Megaphone, MousePointerClick, Search, Sparkles, Users } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, BrainCircuit, CalendarClock, ChartNoAxesCombined, Check, Mail, Megaphone, MessageSquareText, MousePointerClick, Route, ShieldCheck, Target, Users, WandSparkles, Wrench, Zap } from "lucide-react";
 import Accordion from "../components/Accordion";
 import CourseLandingFooter from "../free-dm-course/CourseLandingFooter";
 import CourseLandingHeader from "../free-dm-course/CourseLandingHeader";
@@ -28,7 +29,7 @@ export default function AiMarketingMasterclassPage() {
         <div className={courseStyles.container}>
           <div className={courseStyles.heroGrid}>
             <div className={courseStyles.heroCopy}>
-              <span className={courseStyles.eyebrow}>Free live AI Marketing Masterclass</span>
+              <span className={`${courseStyles.eyebrow} ${styles.liveDate}`}><CalendarClock size={16} /> Live • 14th Dec at 8 PM</span>
               <h1>Learn AI Marketing From Scratch in <em>90 Minutes.</em></h1>
               <p>See how AI can help you create content, write ads and emails, plan landing pages and start building a practical freelance skill—even if you’re a complete beginner.</p>
               <div className={courseStyles.pills}><span><Check size={15} /> Free live session</span><span><Check size={15} /> Beginner friendly</span><span><Check size={15} /> No coding needed</span></div>
@@ -44,20 +45,25 @@ export default function AiMarketingMasterclassPage() {
         <div className={courseStyles.container}>
           <div className={courseStyles.sectionHeading}><span>Practical and beginner friendly</span><h2>What you’ll learn in the masterclass</h2><p>Leave with a clear understanding of AI marketing and a practical next step.</p></div>
           <div className={styles.learnGrid}>
-            <article><span><Sparkles /></span><h3>What AI marketing means</h3><p>Understand AI marketing in simple language and see where it fits in real work.</p></article>
-            <article><span><Bot /></span><h3>How AI is changing marketing</h3><p>See how modern tools are reshaping research, content and campaign work.</p></article>
-            <article><span><FileText /></span><h3>Create ideas faster</h3><p>Use AI to support ads, content, emails and landing-page ideas.</p></article>
-            <article><span><Search /></span><h3>Useful tools for beginners</h3><p>Learn which types of AI tools are worth exploring when you are starting.</p></article>
-            <article><span><Lightbulb /></span><h3>Your first practical steps</h3><p>Get a simple path for building an AI-powered marketing and freelance skill.</p></article>
+            <article><span><BrainCircuit /></span><h3>What AI marketing means</h3><p>Understand AI marketing in simple language and see where it fits in real work.</p></article>
+            <article><span><ChartNoAxesCombined /></span><h3>How AI is changing marketing</h3><p>See how modern tools are reshaping research, content and campaign work.</p></article>
+            <article><span><MessageSquareText /></span><h3>Create ideas faster</h3><p>Use AI to support ads, content, emails and landing-page ideas.</p></article>
+            <article><span><Wrench /></span><h3>Useful tools for beginners</h3><p>Learn which types of AI tools are worth exploring when you are starting.</p></article>
+            <article><span><Route /></span><h3>Your first practical steps</h3><p>Get a simple path for building an AI-powered marketing and freelance skill.</p></article>
           </div>
         </div>
       </section>
 
       <section className={courseStyles.section}>
-        <div className={`${courseStyles.container} ${courseStyles.actionGrid}`}>
-          <div className={courseStyles.actionCopy}><span className={courseStyles.kicker}>Why this skill matters</span><h2>AI will not replace people who learn <em>how to use it.</em></h2><p>People who use AI well can research, write, test ideas and solve marketing problems faster. This session shows you where AI helps—and how to start using it responsibly.</p><ul><li><Check size={17} /> Learn through clear, practical examples</li><li><Check size={17} /> Understand where human thinking still matters</li><li><Check size={17} /> Leave with a realistic learning path</li></ul></div>
-          <div className={styles.reasonPanel}><h3>From ideas to useful marketing work</h3><p>You’ll see how AI can support research, content, ads, emails, landing pages and marketing strategy without making the session technical or overwhelming.</p></div>
-        </div>
+        <div className={courseStyles.container}><div className={styles.aiShift}>
+          <div className={styles.aiShiftIntro}><span><WandSparkles size={16} /> Why this skill matters</span><h2>AI will not replace people who learn <em>how to use it.</em></h2><p>AI is most useful when it strengthens your thinking—not when it replaces it. Learn how to combine human judgment with faster tools.</p></div>
+          <div className={styles.aiShiftCards}>
+            <article><span><BrainCircuit /></span><div><small>Think</small><h3>Keep the human strategy</h3><p>Use your judgment to ask better questions and choose better ideas.</p></div></article>
+            <article><span><Zap /></span><div><small>Create</small><h3>Move from idea to draft faster</h3><p>Support research, content, ads, emails and landing pages with AI.</p></div></article>
+            <article><span><Target /></span><div><small>Apply</small><h3>Turn speed into useful work</h3><p>Build a clear path toward practical marketing and freelance skills.</p></div></article>
+          </div>
+          <div className={styles.aiShiftFooter}><ShieldCheck size={20} /><p>Clear examples. Responsible use. A realistic next step for beginners.</p></div>
+        </div></div>
       </section>
 
       <section className={`${courseStyles.section} ${courseStyles.softSection}`} id="who-can-join">
@@ -73,7 +79,7 @@ export default function AiMarketingMasterclassPage() {
       </section>
 
       <section className={courseStyles.section}>
-        <div className={courseStyles.container}><div className={styles.trainerCard}><div className={styles.trainerMark}>SB</div><div><small>Your masterclass host</small><h2>Saugat Basnet</h2><p>Digital marketing consultant and coach with more than nine years of experience. Saugat, also known as Digital Saugat, founded Sikumna to help people across Nepal turn modern tools into practical skills and real opportunities.</p></div></div></div>
+        <div className={courseStyles.container}><div className={styles.trainerCard}><div className={styles.trainerPhoto}><Image src="/ai-marketing-masterclass/saugat-basnet.jpg" alt="Saugat Basnet, host of the AI Marketing Masterclass" fill sizes="(max-width: 620px) 150px, 190px" /></div><div><small>Your masterclass host</small><h2>Saugat Basnet</h2><p>Digital marketing consultant and coach with more than nine years of experience. Saugat, also known as Digital Saugat, founded Sikumna to help people across Nepal turn modern tools into practical skills and real opportunities.</p></div></div></div>
       </section>
 
       <section className={`${courseStyles.section} ${courseStyles.faqSection} ${courseStyles.softSection}`} id="faqs">

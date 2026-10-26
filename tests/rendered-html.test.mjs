@@ -160,9 +160,13 @@ test("renders and connects the AI Marketing Masterclass registration journey", a
   assert.equal(aliasResponse.status, 200);
   const [landing, thanks, alias] = await Promise.all([landingResponse.text(), thanksResponse.text(), aliasResponse.text()]);
   assert.match(landing, /Learn AI Marketing From Scratch/);
+  assert.match(landing, /14th Dec at 8 PM/);
   assert.match(landing, /What you’ll learn in the masterclass/);
+  assert.match(landing, /Keep the human strategy/);
+  assert.match(landing, /saugat-basnet\.jpg/);
   assert.match(landing, /Reserve My Free Seat/);
   assert.match(landing, /name="fields\.whatsapp"/);
+  assert.match(landing, /data-flodesk-form-id="6a0056f54d292a1f518a517b"/);
   assert.match(landing, /action="https:\/\/form\.flodesk\.com\/forms\/6a0056f54d292a1f518a517b\/submit"/);
   assert.doesNotMatch(landing, /20th September|Only 100 Seats|seats remaining/i);
   assert.match(thanks, /You’re registered/);
@@ -172,6 +176,7 @@ test("renders and connects the AI Marketing Masterclass registration journey", a
   assert.match(alias, /You’re registered/);
   assert.match(formSource, /fetch\("\/api\/flodesk\/ai-marketing-masterclass"/);
   assert.match(formSource, /window\.location\.assign\(new URL\("\/ai-marketing-masterclass\/thank-you"/);
+  assert.doesNotMatch(formSource, /Sparkles/);
   assert.match(routeSource, /form\.flodesk\.com\/forms\/6a0056f54d292a1f518a517b\/submit/);
   assert.match(routeSource, /"fields\.whatsapp": whatsapp/);
   assert.doesNotMatch(`${landing}\n${thanks}`, /Switch to dark mode|Open menu|Primary navigation/);
