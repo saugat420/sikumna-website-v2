@@ -7,3 +7,52 @@
 @media(prefers-reduced-motion:reduce){.site *{scroll-behavior:auto!important;transition:none!important}}
 
 .formCard button:disabled{cursor:wait;opacity:.72}.honeypot{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}.formError{color:#b42318;font-size:10px;font-weight:750;text-align:center}
+
+/* Readability refresh: keep these pages aligned with the main Sikumna type scale. */
+.heroCopy>p,.thanksCopy>p{max-width:600px;font-size:18px;line-height:1.7}
+.pills{gap:10px}.pills span{min-height:38px;padding:0 14px;font-size:14px}
+.primaryButton,.whiteButton{min-height:56px;padding-inline:24px;border-radius:10px;font-size:16px}
+.proof p,.proof strong{color:#253b5a;font-size:15px}
+.avatarStack i{width:34px;height:34px;font-size:12px}
+.formShell{padding:20px;border-radius:26px;transform:none}
+.formCard{padding:38px;border-radius:20px;transform:none}
+.formCard h2{margin:0;font-size:36px;line-height:1.12}
+.formCard>p{margin:15px 0 26px;font-size:17px;line-height:1.6}
+.formCard form{gap:11px}.formCard label{margin-top:8px;font-size:15px}
+.formCard input{height:54px;padding-inline:15px;font-size:16px}
+.formCard button{height:56px;margin-top:12px;font-size:16px}
+.sectionHeading{max-width:780px}.sectionHeading>span{font-size:13px}
+.sectionHeading h2{font-size:clamp(2.4rem,4vw,3.3rem)}
+.sectionHeading p{font-size:17px;line-height:1.65}
+.steps article,.audience article,.inboxPlaces article{padding:30px}
+.steps article>span{width:52px;height:52px;margin-top:0}
+.steps h3,.audience h3,.inboxPlaces h3{font-size:21px}
+.steps p,.audience p,.inboxPlaces p{color:#6d7f97;font-size:16px;line-height:1.65}
+.actionCopy>p{font-size:17px;line-height:1.7}.actionCopy li{font-size:15px}
+.lessonPreview>header,.lessonPreview>header span{font-size:13px}.lessonCard>b{font-size:17px}
+.assignment span strong{font-size:15px}.assignment span small{font-size:13px}
+.audience h3{font-size:19px}.audience p{font-size:15px}
+.faqWrap :global(.ds-accordion button){min-height:68px;padding-inline:22px;font-size:16px}
+.faqWrap :global(.accordion-panel p){padding:0 22px 22px;font-size:15px;line-height:1.7}
+.finalCta p{font-size:17px}.footer .container{min-height:112px;color:#71839a;font-size:14px}
+.thanksHero{padding:92px 0 100px}.thanksCopy{max-width:880px;margin:auto;text-align:center}
+.thanksCopy .successIcon,.thanksCopy .eyebrow{margin-inline:auto}.thanksCopy .pills{justify-content:center}.thanksCopy>p{margin-inline:auto}
+.nextStep{padding-top:96px}.inboxPlaces article>span{width:52px;height:52px}
+.helpTip{padding:20px 22px}.helpTip p{font-size:15px;line-height:1.65}
+.emailActions a{min-height:54px;padding-inline:24px;font-size:15px}
+
+@media(max-width:620px){
+  .heroCopy h1,.thanksCopy h1{font-size:clamp(3rem,14vw,3.8rem)}
+  .heroCopy>p,.thanksCopy>p{font-size:16px;line-height:1.65}
+  .pills span{min-height:34px;padding-inline:11px;font-size:12px}
+  .formCard{padding:28px 22px}.formCard h2{font-size:29px}.formCard>p{font-size:16px}
+  .formCard label{font-size:14px}.formCard input,.formCard button{font-size:15px}
+  .sectionHeading>span{font-size:12px}.sectionHeading h2{font-size:2.35rem}.sectionHeading p{font-size:15px}
+  .steps p,.audience p,.inboxPlaces p{font-size:15px}.audience h3{font-size:17px}
+  .faqWrap :global(.ds-accordion button){min-height:62px;padding-inline:16px;font-size:14px}
+  .faqWrap :global(.accordion-panel p){padding:0 16px 18px;font-size:14px}
+  .thanksHero{padding:62px 0 72px}.thanksCopy{text-align:center}
+  .thanksCopy .successIcon,.thanksCopy .eyebrow{margin-inline:auto}.thanksCopy .pills{justify-content:center}
+  .inboxPlaces article{padding:25px 22px}.inboxPlaces h3{font-size:20px}
+  .helpTip p{font-size:14px}.emailActions a{font-size:13px}
+}

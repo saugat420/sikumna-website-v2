@@ -123,8 +123,9 @@ test("renders the free digital marketing course landing page", async () => {
   assert.match(html, /name="confirm_email_address"/);
   assert.match(html, /Back to homepage/);
   assert.match(thanks, /You’re in!/);
-  assert.match(thanks, /Don’t miss your first lesson/);
+  assert.match(thanks, /Check your inbox for your first lesson/);
   assert.match(thanks, /Back to homepage/);
+  assert.doesNotMatch(thanks, /Your learning journey|Don’t just watch\. Take action/);
   assert.doesNotMatch(`${html}\n${thanks}`, /Switch to dark mode|Open menu|Primary navigation/);
 });
 

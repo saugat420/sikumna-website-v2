@@ -32,8 +32,8 @@ export default function FreeDmCourseLandingPage() {
               <h1>Learn Digital<br />Marketing in <em>30 Days.</em><br />For FREE.</h1>
               <p>One video in your email every day. One easy assignment to put your learning into action. Build real skills by doing, not just watching.</p>
               <div className={styles.pills}><span><Check size={14} /> 100% Free</span><span><Check size={14} /> Beginner Friendly</span><span><Check size={14} /> Learn Anytime</span></div>
-              <div className={styles.heroAction}><a href="#join" className={styles.primaryButton}>Start Learning for FREE <ArrowRight size={17} /></a><small>No technical background needed</small></div>
-              <div className={styles.proof}><div className={styles.avatarStack}><i>S</i><i>R</i><i>A</i><i>M</i></div><p><strong>255,000+ learners across Nepal have joined</strong><br />Start your own learning journey today.</p></div>
+              <div className={styles.heroAction}><a href="#join" className={styles.primaryButton}>Start Learning for FREE <ArrowRight size={17} /></a></div>
+              <div className={styles.proof}><div className={styles.avatarStack}><i>S</i><i>R</i><i>A</i><i>M</i></div><p><strong>255,000+ learners across Nepal have joined</strong></p></div>
             </div>
             <CourseLandingForm />
           </div>
@@ -44,9 +44,9 @@ export default function FreeDmCourseLandingPage() {
         <div className={styles.container}>
           <div className={styles.sectionHeading}><span>It’s really this simple</span><h2>How the 30-day course works</h2><p>No complicated schedule. No overwhelm. Just one small step forward, every day.</p></div>
           <div className={styles.steps}>
-            <article><small>Step 01</small><span><Mail size={22} /></span><h3>Get one video daily</h3><p>A new digital marketing lesson lands in your email each day for 30 days.</p></article>
-            <article><small>Step 02</small><span><Play size={22} /></span><h3>Watch when you want</h3><p>Learn from your laptop, wherever you are, whenever it suits you.</p></article>
-            <article><small>Step 03</small><span><CheckCircle2 size={22} /></span><h3>Do the assignment</h3><p>Every lesson includes a simple task you can usually finish in about an hour.</p></article>
+            <article><span><Mail size={25} /></span><h3>Get one video daily</h3><p>A new digital marketing lesson lands in your email each day for 30 days.</p></article>
+            <article><span><Play size={25} /></span><h3>Watch when you want</h3><p>Learn from your laptop, wherever you are, whenever it suits you.</p></article>
+            <article><span><CheckCircle2 size={25} /></span><h3>Do the assignment</h3><p>Every lesson includes a simple task you can usually finish in about an hour.</p></article>
           </div>
         </div>
       </section>
@@ -54,7 +54,7 @@ export default function FreeDmCourseLandingPage() {
       <section className={styles.section} id="why-this-course">
         <div className={`${styles.container} ${styles.actionGrid}`}>
           <div className={styles.actionCopy}><span className={styles.kicker}>More than just videos</span><h2>Don’t just watch.<br /><em>Learn. Practice. Implement.</em></h2><p>Watching tutorials doesn’t automatically build skills. This course is designed to help you actually use what you learn—one manageable assignment at a time.</p><ul><li><Check size={16} /> Simple lessons for complete beginners</li><li><Check size={16} /> Practical tasks after every video</li><li><Check size={16} /> About one hour a day for your assignment</li><li><Check size={16} /> No IT or technical background required</li></ul></div>
-          <div className={styles.lessonPreview}><header><strong>This is what learning looks like</strong><span>Day 01 of 30</span></header><div className={styles.lessonCard}><b>✉ Your next lesson is ready!</b><small>From: Sikumna Free Learning · In your inbox</small><div className={styles.videoMock}><i><Play size={23} fill="currentColor" /></i></div></div><div className={styles.assignment}><CheckCircle2 size={20} /><span><strong>Today’s practical assignment</strong><small>Watch. Practice. Complete.</small></span><b>~1 hour</b></div></div>
+          <div className={styles.lessonPreview}><header><strong>This is what learning looks like</strong><span>Day 1 of 30</span></header><div className={styles.lessonCard}><b>Your next lesson is ready!</b><div className={styles.videoMock}><i><Play size={23} fill="currentColor" /></i></div></div><div className={styles.assignment}><CheckCircle2 size={22} /><span><strong>Today’s practical assignment</strong><small>Watch, practice and complete.</small></span></div></div>
         </div>
       </section>
 
@@ -77,8 +77,8 @@ export default function FreeDmCourseLandingPage() {
         </div>
       </section>
 
-      <section className={styles.finalCta}><div className={styles.container}><div><h2>30 days from now, you’ll be glad you started.</h2><p>Get one lesson a day. Practice what you learn. Build your skills, for free.</p><a href="#join" className={styles.whiteButton}>Join the FREE Course <ArrowRight size={16} /></a><small>No payment. No IT background. Just show up and practice.</small></div></div></section>
+      <section className={styles.finalCta}><div className={styles.container}><div><h2>30 days from now, you’ll be glad you started.</h2><p>Get one lesson a day. Practice what you learn. Build your skills for free.</p><a href="#join" className={styles.whiteButton}>Join the FREE Course <ArrowRight size={16} /></a></div></div></section>
     </main>
-    <CourseLandingFooter label="Free course landing page" />
+    <CourseLandingFooter />
   </div>;
 }
