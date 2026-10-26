@@ -19,7 +19,8 @@ const routeMatrix = [
   "/programs/personal-branding", "/programs/communication", "/programs/personal-finance", "/programs/english-fluency",
   "/free-masterclasses", "/free-masterclasses/freelancing-101", "/free-masterclasses/seo-masterclass",
   "/free-masterclasses/ecommerce-masterclass", "/free-masterclasses/client-acquisition-masterclass",
-  "/free-masterclasses/freelancing-to-agency-blueprint", "/free-courses/digital-marketing", "/free-dm-course", "/free-dm-course/thank-you", "/stories", "/about",
+  "/free-masterclasses/freelancing-to-agency-blueprint", "/free-courses/digital-marketing", "/free-dm-course", "/free-dm-course/thank-you",
+  "/ai-marketing-masterclass", "/ai-marketing-masterclass/thank-you", "/ai-marketing-masterclass/thanks", "/stories", "/about",
   "/help-center", "/faq", "/refund-policy", "/terms", "/privacy-policy",
   "/events/ai-marketing-masterclass", "/events/english-fluency-workshop",
 ];
@@ -144,6 +145,36 @@ test("submits the preserved landing form to Flodesk before redirecting", async (
   assert.doesNotMatch(home, /No account required/);
   assert.match(library, /href="\/free-dm-course"/);
   assert.doesNotMatch(library, /No sign-up or login required/);
+});
+
+test("renders and connects the AI Marketing Masterclass registration journey", async () => {
+  const [landingResponse, thanksResponse, aliasResponse, formSource, routeSource] = await Promise.all([
+    render("/ai-marketing-masterclass"),
+    render("/ai-marketing-masterclass/thank-you"),
+    render("/ai-marketing-masterclass/thanks"),
+    readFile(new URL("../app/ai-marketing-masterclass/AiMasterclassForm.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/flodesk/ai-marketing-masterclass/route.ts", import.meta.url), "utf8"),
+  ]);
+  assert.equal(landingResponse.status, 200);
+  assert.equal(thanksResponse.status, 200);
+  assert.equal(aliasResponse.status, 200);
+  const [landing, thanks, alias] = await Promise.all([landingResponse.text(), thanksResponse.text(), aliasResponse.text()]);
+  assert.match(landing, /Learn AI Marketing From Scratch/);
+  assert.match(landing, /What you’ll learn in the masterclass/);
+  assert.match(landing, /Reserve My Free Seat/);
+  assert.match(landing, /name="fields\.whatsapp"/);
+  assert.match(landing, /action="https:\/\/form\.flodesk\.com\/forms\/6a0056f54d292a1f518a517b\/submit"/);
+  assert.doesNotMatch(landing, /20th September|Only 100 Seats|seats remaining/i);
+  assert.match(thanks, /You’re registered/);
+  assert.match(thanks, /Complete Zoom Registration/);
+  assert.match(thanks, /Join WhatsApp Group/);
+  assert.match(thanks, /1193138612/);
+  assert.match(alias, /You’re registered/);
+  assert.match(formSource, /fetch\("\/api\/flodesk\/ai-marketing-masterclass"/);
+  assert.match(formSource, /window\.location\.assign\(new URL\("\/ai-marketing-masterclass\/thank-you"/);
+  assert.match(routeSource, /form\.flodesk\.com\/forms\/6a0056f54d292a1f518a517b\/submit/);
+  assert.match(routeSource, /"fields\.whatsapp": whatsapp/);
+  assert.doesNotMatch(`${landing}\n${thanks}`, /Switch to dark mode|Open menu|Primary navigation/);
 });
 
 test("every route in the complete route matrix renders", async () => {
