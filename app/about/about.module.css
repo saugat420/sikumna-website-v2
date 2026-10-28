@@ -1,0 +1,71 @@
+.page{background:var(--surface)}
+.hero{position:relative;overflow:hidden;isolation:isolate;border-bottom:1px solid var(--border)}
+.gridBackdrop{position:absolute;inset:0;z-index:-2;background-color:var(--surface);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(to bottom,black 0%,black 82%,transparent 100%)}
+.hero:before{content:"";position:absolute;z-index:-1;width:min(760px,80vw);height:470px;top:-250px;left:18%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--primary) 15%,transparent),transparent 69%)}
+.heroLayout{padding:102px 0 108px;display:grid;grid-template-columns:1.05fr .95fr;gap:82px;align-items:center}
+.heroCopy h1{max-width:650px;margin:20px 0 0;color:var(--ink);font-size:clamp(3.3rem,5.3vw,4.5rem);font-weight:800;line-height:1.02;letter-spacing:-.065em}
+.heroCopy h1 em{color:var(--primary);font-style:normal}
+.heroStory{max-width:670px;margin-top:31px;display:grid;gap:15px}
+.heroStory p{margin:0;color:var(--body);font-size:17px;line-height:1.7}
+.heroStory p strong{color:var(--ink)}
+.heroQuestion{margin:4px 0;padding:18px 20px;border-left:3px solid var(--primary);border-radius:0 12px 12px 0;background:color-mix(in srgb,var(--surface-raised) 88%,var(--primary-soft))}
+.heroQuestion span,.heroQuestion strong{display:block}
+.heroQuestion span{color:var(--muted);font-size:13px;font-weight:750}
+.heroQuestion strong{margin-top:3px;color:var(--ink);font-size:22px;line-height:1.35}
+.journey{padding:33px;border:1px solid var(--border);border-radius:24px;background:color-mix(in srgb,var(--surface-raised) 93%,transparent);box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+.journeyHeading span,.journeyHeading strong{display:block}
+.journeyHeading span{color:var(--primary);font-size:12px;font-weight:800;letter-spacing:.075em;text-transform:uppercase}
+.journeyHeading strong{margin-top:6px;color:var(--ink);font-size:24px;letter-spacing:-.035em}
+.journeySteps{margin-top:24px;display:grid;gap:10px}
+.journeyItem{display:grid;gap:10px}
+.journeyItem article{padding:20px;display:grid;grid-template-columns:50px 1fr;gap:15px;align-items:center;border:1px solid var(--border);border-radius:15px;background:var(--surface-raised)}
+.journeyItem article>span{width:50px;height:50px;display:grid;place-items:center;border-radius:13px;color:var(--primary);background:var(--primary-soft)}
+.journeyItem h2{margin:0;color:var(--ink);font-size:21px;line-height:1.25;letter-spacing:-.025em}
+.journeyItem p{margin:4px 0 0;color:var(--body);font-size:14px;line-height:1.5}
+.journeyArrow{height:24px;display:grid;place-items:center;color:var(--primary)}
+.journeyArrow svg:first-child{display:none}
+.missionSection{padding:var(--section-space) 0}
+.missionCard{padding:68px;border:1px solid color-mix(in srgb,var(--primary) 26%,var(--border));border-radius:26px;background:var(--primary-wash)}
+.missionCard h2{max-width:970px;margin:22px 0 0;color:var(--ink);font-size:clamp(2.65rem,4.6vw,4rem);font-weight:800;line-height:1.08;letter-spacing:-.06em}
+.missionCard h2 em{color:var(--primary);font-style:normal}
+.missionCopy{max-width:850px;margin-top:31px;display:grid;gap:15px}
+.missionCopy p{margin:0;color:var(--body);font-size:18px;line-height:1.75}
+.whatSection{padding:var(--section-space) 0;background:var(--surface-alt)}
+.whatLayout{display:grid;grid-template-columns:.92fr 1.08fr;gap:80px;align-items:start}
+.whatCopy{position:sticky;top:110px}
+.whatCopy h2,.founderCopy h2,.ctaCard h2{margin:18px 0 0;color:var(--ink);font-size:clamp(2.35rem,3.8vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.05em}
+.whatCopy>p{margin:18px 0 0;color:var(--body);font-size:17px;line-height:1.72}
+.simpleGoal{margin-top:29px;padding:20px;display:grid;grid-template-columns:auto 1fr;gap:13px;border:1px solid color-mix(in srgb,var(--primary) 32%,var(--border));border-radius:14px;background:var(--surface-raised)}
+.simpleGoal svg{margin-top:2px;color:var(--primary)}
+.simpleGoal span,.simpleGoal strong{display:block}
+.simpleGoal span{color:var(--muted);font-size:13px;font-weight:750}
+.simpleGoal strong{margin-top:3px;color:var(--ink);font-size:15px;line-height:1.55}
+.learningCards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.learningCards article{min-height:240px;padding:29px;border:1px solid var(--border);border-radius:18px;background:var(--surface-raised)}
+.learningCards article>span{width:50px;height:50px;display:grid;place-items:center;border-radius:13px;color:var(--primary);background:var(--primary-soft)}
+.learningCards h3{margin:22px 0 9px;color:var(--ink);font-size:21px;line-height:1.25;letter-spacing:-.03em}
+.learningCards p{margin:0;color:var(--body);font-size:15px;line-height:1.68}
+.foundersSection{padding:var(--section-space) 0}
+.foundersLayout{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:center}
+.founderCopy>p{max-width:650px;margin:19px 0 0;color:var(--body);font-size:17px;line-height:1.75}
+.founderCopy>p strong{color:var(--ink)}
+.founderCopy blockquote{max-width:650px;margin:25px 0;padding:21px 23px;border-left:3px solid var(--primary);border-radius:0 14px 14px 0;color:var(--ink);background:var(--primary-wash);font-size:19px;font-weight:750;line-height:1.55}
+.founderCards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.founderCard{margin:0;overflow:hidden;border:1px solid var(--border);border-radius:19px;background:var(--surface-raised)}
+.founderPhoto{position:relative;aspect-ratio:1;overflow:hidden;background:var(--primary-soft)}
+.founderPhoto img{object-fit:cover;object-position:center}
+.founderCard figcaption{padding:20px}
+.founderCard figcaption strong,.founderCard figcaption span{display:block}
+.founderCard figcaption strong{color:var(--ink);font-size:19px}
+.founderCard figcaption span{margin-top:3px;color:var(--body);font-size:14px}
+.ctaSection{padding:0 0 var(--section-space)}
+.ctaCard{position:relative;overflow:hidden;padding:58px 62px;display:flex;align-items:center;justify-content:space-between;gap:42px;border:1px solid color-mix(in srgb,var(--primary) 25%,var(--border));border-radius:24px;background:var(--primary-wash)}
+.ctaGrid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(90deg,black,transparent 72%);pointer-events:none}
+.ctaCard>div:not(.ctaGrid){position:relative}
+.ctaCard h2{max-width:620px}
+.ctaCard p{max-width:650px;margin:16px 0 0;color:var(--body);font-size:17px;line-height:1.65}
+.ctaActions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;flex:none}
+
+@media(max-width:1024px){.heroLayout{gap:50px}.whatLayout,.foundersLayout{gap:52px}.ctaCard{padding:50px 44px;align-items:flex-start;flex-direction:column}.ctaActions{justify-content:flex-start}}
+@media(max-width:860px){.heroLayout,.whatLayout,.foundersLayout{grid-template-columns:1fr}.heroLayout{padding:82px 0 90px}.heroCopy{max-width:760px}.journey{max-width:720px}.whatCopy{position:static}.learningCards{max-width:760px}.founderCopy{max-width:760px}.founderCards{max-width:720px}}
+@media(max-width:620px){.heroLayout{padding:66px 0 74px;gap:45px}.heroCopy h1{font-size:clamp(2.75rem,12.5vw,3.45rem)}.heroStory{margin-top:26px;gap:14px}.heroStory p{font-size:16px;line-height:1.68}.heroQuestion{padding:16px}.heroQuestion strong{font-size:20px}.journey{padding:23px 18px;border-radius:19px}.journeyHeading strong{font-size:22px}.journeyItem article{padding:17px 15px;grid-template-columns:46px 1fr}.journeyItem article>span{width:46px;height:46px}.journeyItem h2{font-size:19px}.missionSection,.whatSection,.foundersSection{padding:72px 0}.missionCard{padding:38px 24px;border-radius:20px}.missionCard h2{font-size:clamp(2.25rem,10.5vw,2.8rem)}.missionCopy{margin-top:24px}.missionCopy p{font-size:16px;line-height:1.7}.whatLayout,.foundersLayout{gap:42px}.whatCopy h2,.founderCopy h2,.ctaCard h2{font-size:clamp(2.15rem,10vw,2.65rem)}.whatCopy>p,.founderCopy>p{font-size:16px;line-height:1.7}.simpleGoal{padding:17px}.learningCards{grid-template-columns:1fr;gap:13px}.learningCards article{min-height:0;padding:25px 22px}.learningCards h3{font-size:20px}.founderCopy blockquote{padding:18px;font-size:17px}.founderCards{max-width:340px;margin-inline:auto;grid-template-columns:1fr;gap:16px}.ctaSection{padding-bottom:72px}.ctaCard{padding:38px 23px;border-radius:20px}.ctaCard p{font-size:16px}.ctaActions{width:100%;display:grid}.ctaActions :global(.ds-button){width:100%;line-height:1.35;padding-block:12px}}

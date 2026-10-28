@@ -205,6 +205,26 @@ test("renders the requested support content and removes unfinished footer items"
   assert.doesNotMatch(home, /Coming soon|Careers/);
 });
 
+test("renders the redesigned mission-led About page", async () => {
+  const response = await render("/about");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Practical education for/);
+  assert.match(html, /What can you actually do/);
+  assert.match(html, /1 million Nepalis/);
+  assert.match(html, /Practical learning for real life/);
+  assert.match(html, /Experienced Trainers &amp; Experts/);
+  assert.match(html, /Saugat Basnet/);
+  assert.match(html, /Raina Byanjankar/);
+  assert.match(html, /\/images\/about\/saugat-basnet\.jpg/);
+  assert.match(html, /\/images\/about\/raina-byanjankar\.jpg/);
+  assert.equal((html.match(/<figure/g) ?? []).length, 2);
+  assert.match(html, /href="\/programs"/);
+  assert.match(html, /href="\/free-masterclasses"/);
+  assert.match(html, /Open menu/);
+  assert.match(html, /Switch to dark mode/);
+});
+
 test("every rendered internal link resolves to a real route or section", async () => {
   const pages = await Promise.all(routeMatrix.map(async (path) => ({ path, html: await (await render(path)).text() })));
   const hrefs = new Set();
