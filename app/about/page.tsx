@@ -8,7 +8,7 @@ import styles from "./about.module.css";
 
 export const metadata: Metadata = {
   title: "About Sikumna Nepal | Practical Education for Real Life",
-  description: "Learn why Sikumna exists, how we create practical learning programs, and our mission to help one million Nepalis build useful skills.",
+  description: "Learn why Sikumna exists, how we create practical learning programs, and our mission to help one million Nepalese people build useful skills.",
   alternates: { canonical: "/about" },
 };
 
@@ -60,7 +60,7 @@ export default function AboutPage() {
     <section className={styles.missionSection}>
       <Container><div className={styles.missionCard}>
         <Badge>Our Mission</Badge>
-        <h2>Help <em>1 million Nepalis</em> upskill themselves and build a better quality of life.</h2>
+        <h2>Help <em>1 million Nepalese</em> upskill themselves and build a better quality of life.</h2>
         <div className={styles.missionCopy}>
           <p>We believe the right skill can help someone find a better job, start freelancing, grow a business, increase their income, communicate better, or simply become more confident about their future.</p>
           <p>And we want to make that kind of practical learning easier to access.</p>

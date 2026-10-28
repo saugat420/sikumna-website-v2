@@ -211,7 +211,7 @@ test("renders the redesigned mission-led About page", async () => {
   const html = await response.text();
   assert.match(html, /Practical education for/);
   assert.match(html, /What can you actually do/);
-  assert.match(html, /1 million Nepalis/);
+  assert.match(html, /1 million Nepalese/);
   assert.match(html, /Practical learning for real life/);
   assert.match(html, /Experienced Trainers &amp; Experts/);
   assert.match(html, /Saugat Basnet/);
